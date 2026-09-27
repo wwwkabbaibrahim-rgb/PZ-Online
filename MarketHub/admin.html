@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PZ Online — Admin Dashboard</title>
+  <style>
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{font-family:Arial,Helvetica,sans-serif;background:#f5f6f8;color:#222;min-height:100vh}
+    .admin-header{background:#111827;color:white;padding:18px 28px;display:flex;align-items:center;justify-content:space-between;gap:20px;position:sticky;top:0;z-index:10}
+    .brand{display:flex;align-items:center;gap:12px}
+    .brand-logo{width:42px;height:42px;border-radius:10px;background:white;color:#111827;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:20px}
+    .brand-text h1{font-size:20px;margin-bottom:3px}.brand-text p{font-size:12px;opacity:.7}
+    .back-button{color:white;text-decoration:none;border:1px solid rgba(255,255,255,.25);padding:9px 14px;border-radius:8px;font-size:14px}
+    .back-button:hover{background:rgba(255,255,255,.08)}
+    .admin-container{max-width:1400px;margin:0 auto;padding:30px 20px 60px}
+    .page-heading{margin-bottom:25px}.page-heading h2{font-size:28px;margin-bottom:7px}.page-heading p{color:#6b7280;font-size:14px}
+    .access-message{display:none;background:#fff;border:1px solid #e5e7eb;border-radius:12px;padding:25px;text-align:center;margin-bottom:25px}
+    .access-message h3{margin-bottom:8px;color:#b91c1c}.access-message p{color:#6b7280;font-size:14px}
+    .dashboard-content{display:none}
+    .stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;margin-bottom:30px}
+    .stat-card{background:white;border:1px solid #e5e7eb;border-radius:14px;padding:22px;box-shadow:0 2px 8px rgba(0,0,0,.04)}
+    .stat-label{font-size:13px;color:#6b7280;margin-bottom:10px}.stat-value{font-size:30px;font-weight:700;color:#111827}
+    .stat-note{font-size:11px;color:#9ca3af;margin-top:8px;line-height:1.4}
+    .section{background:white;border:1px solid #e5e7eb;border-radius:14px;margin-bottom:25px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,.04)}
+    .section-header{padding:18px 20px;border-bottom:1px solid #e5e7eb;display:flex;align-items:center;justify-content:space-between;gap:15px}
+    .section-header h3{font-size:18px}.section-header span{color:#6b7280;font-size:12px}
+    .table-toolbar{padding:15px 20px;border-bottom:1px solid #e5e7eb;background:#fafafa}
+    .search-input{width:100%;max-width:430px;padding:11px 13px;border:1px solid #d1d5db;border-radius:8px;font-size:14px;outline:none;background:white}
+    .search-input:focus{border-color:#6b7280;box-shadow:0 0 0 3px rgba(107,114,128,.12)}
+    .table-wrapper{width:100%;overflow-x:auto}table{width:100%;border-collapse:collapse;min-width:1050px}
+    th,td{padding:14px 16px;text-align:left;border-bottom:1px solid #f0f1f3;font-size:13px;vertical-align:middle}
+    th{color:#6b7280;font-size:12px;font-weight:600;background:#fafafa}td{color:#374151}tr:last-child td{border-bottom:none}
+    .listing-id{font-size:10px;color:#9ca3af;margin-top:4px;word-break:break-all}
+    .listing-actions{display:flex;gap:7px;align-items:center}
+    .view-listing-button,.delete-listing-button{border:0;border-radius:7px;padding:7px 10px;font-size:12px;cursor:pointer}
+    .view-listing-button{background:#eef2ff;color:#3730a3}.view-listing-button:hover{background:#e0e7ff}
+    .delete-listing-button{background:#fef2f2;color:#b91c1c}.delete-listing-button:hover{background:#fee2e2}
+    .admin-listing-link{border:0;background:none;padding:0;color:#374151;font-weight:600;text-decoration:underline;cursor:pointer;text-align:left}
+    .admin-listing-link:hover{color:#111827}
+    .report-status{display:inline-block;padding:4px 8px;border-radius:999px;font-size:11px}
+    .report-status.open{background:#fff7ed;color:#c2410c}.report-status.resolved{background:#ecfdf5;color:#047857}
+    .report-status-toggle-button{border:0;cursor:pointer;font-weight:700;transition:opacity .15s}
+    .report-status-toggle-button:hover{opacity:.75}
+    .status{display:inline-block;padding:4px 8px;border-radius:999px;font-size:11px;background:#ecfdf5;color:#047857}
+    .empty-state{padding:35px 20px;text-align:center;color:#9ca3af;font-size:14px}
+    .loading{padding:35px 20px;text-align:center;color:#6b7280;font-size:14px}
+    .admin-footer{text-align:center;color:#9ca3af;font-size:12px;padding-top:10px}
+    @media(max-width:900px){.stats-grid{grid-template-columns:repeat(2,1fr)}}
+    @media(max-width:600px){.admin-header{padding:14px 16px}.brand-text h1{font-size:17px}.brand-text p{display:none}.back-button{font-size:12px;padding:8px 10px}.admin-container{padding:22px 14px 40px}.page-heading h2{font-size:23px}.stats-grid{grid-template-columns:1fr}.stat-card{padding:18px}}
+  </style>
+</head>
+<body>
+  <header class="admin-header">
+    <div class="brand">
+      <div class="brand-logo">PZ</div>
+      <div class="brand-text">
+        <h1>PZ Online</h1>
+        <p>Marketplace Administration</p>
+      </div>
+    </div>
+    <a href="index.html" class="back-button">← Back to marketplace</a>
+  </header>
+
+  <main class="admin-container">
+    <div class="page-heading">
+      <h2>Admin Dashboard</h2>
+      <p>Monitor and manage your PZ Online marketplace.</p>
+      <p class="stat-note">To make someone an admin, add a document at <code>admins/&lt;their user ID&gt;</code> with a field <code>role: "admin"</code> in Firebase Console → Firestore Database (user IDs are visible in Firebase Console → Authentication, or in the Registered Users table below).</p>
+    </div>
+
+    <div id="access-message" class="access-message">
+      <h3>Admin access required</h3>
+      <p>You must be signed in with an authorized PZ Online administrator account to view this dashboard.</p>
+    </div>
+
+    <div id="dashboard-content" class="dashboard-content">
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-label">Total Listings</div>
+          <div id="total-listings" class="stat-value">—</div>
+          <div class="stat-note">Listings currently stored in Firestore.</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Active Conversations</div>
+          <div id="total-conversations" class="stat-value">—</div>
+          <div class="stat-note">Buyer and seller conversations.</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Recent Listings</div>
+          <div id="recent-listings-count" class="stat-value">—</div>
+          <div class="stat-note">Latest 10 listings shown below.</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Open Reports</div>
+          <div id="total-reports" class="stat-value">—</div>
+          <div class="stat-note">Reports waiting for moderation.</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Registered Users</div>
+          <div id="total-users" class="stat-value">—</div>
+          <div class="stat-note">Everyone who has signed up or logged in.</div>
+        </div>
+      </div>
+
+      <section class="section">
+        <div class="section-header">
+          <h3>Listings Management</h3>
+          <span>Search, view and remove marketplace listings</span>
+        </div>
+
+        <div class="table-toolbar">
+          <input
+            id="listings-search"
+            class="search-input"
+            type="search"
+            placeholder="Search by title, seller, category, location or ID..."
+            aria-label="Search listings"
+          >
+        </div>
+
+        <div id="listings-loading" class="loading">Loading listings...</div>
+
+        <div class="table-wrapper">
+          <table id="listings-table" style="display:none;">
+            <thead>
+              <tr>
+                <th>Listing</th>
+                <th>Price</th>
+                <th>Category</th>
+                <th>Location</th>
+                <th>Seller</th>
+                <th>Created</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="listings-table-body"></tbody>
+          </table>
+        </div>
+
+        <div id="listings-empty" class="empty-state" style="display:none;">
+          No listings match your search.
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="section-header">
+          <h3>Registered Users</h3>
+          <span>Everyone who has signed up or signed in</span>
+        </div>
+
+        <div class="table-toolbar">
+          <input
+            id="users-search"
+            class="search-input"
+            type="search"
+            placeholder="Search by name, email or provider..."
+            aria-label="Search users"
+          >
+        </div>
+
+        <div id="users-loading" class="loading">Loading users...</div>
+
+        <div class="table-wrapper">
+          <table id="users-table" style="display:none;">
+            <thead>
+              <tr>
+                <th>User</th>
+                <th>Email</th>
+                <th>Signed in with</th>
+                <th>Verified</th>
+                <th>Joined</th>
+                <th>Last active</th>
+              </tr>
+            </thead>
+            <tbody id="users-table-body"></tbody>
+          </table>
+        </div>
+
+        <div id="users-empty" class="empty-state" style="display:none;">
+          No registered users yet.
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="section-header">
+          <h3>Reports / Moderation</h3>
+          <span>Review reported listings</span>
+        </div>
+        <div id="reports-loading" class="loading">Loading reports...</div>
+        <div class="table-wrapper">
+          <table id="reports-table" style="display:none;">
+            <thead>
+              <tr>
+                <th>Listing</th>
+                <th>Reason</th>
+                <th>Reported by</th>
+                <th>Details</th>
+                <th>Date</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="reports-table-body"></tbody>
+          </table>
+        </div>
+        <div id="reports-empty" class="empty-state" style="display:none;">
+          No reports found.
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="section-header">
+          <h3>Recent Conversations</h3>
+          <span>Buyer and seller activity</span>
+        </div>
+        <div id="conversations-loading" class="loading">Loading conversations...</div>
+        <div class="table-wrapper">
+          <table id="conversations-table" style="display:none;">
+            <thead>
+              <tr>
+                <th>Listing</th>
+                <th>Buyer</th>
+                <th>Seller</th>
+                <th>Last Message</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody id="conversations-table-body"></tbody>
+          </table>
+        </div>
+        <div id="conversations-empty" class="empty-state" style="display:none;">
+          No conversations found.
+        </div>
+      </section>
+
+      <div class="admin-footer">PZ Online Admin Dashboard</div>
+    </div>
+  </main>
+
+  <script type="module" src="admin.js"></script>
+</body>
+</html>

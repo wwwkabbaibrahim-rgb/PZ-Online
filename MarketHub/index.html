@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="PZ Online is Sierra Leone's online marketplace for buying, selling, and finding services."
+    />
+    <title>PZ Online | Buy, Sell & Find Services in Sierra Leone</title>
+
+    <link rel="stylesheet" href="style.css" />
+  </head>
+
+  <body>
+    <header class="site-header">
+      <div class="container nav">
+        <a class="logo" href="#">PZ<span>Online</span></a>
+
+        <nav class="nav-links" aria-label="Main navigation">
+         <a href="#listings">Browse listings</a>
+<a href="#my-listings">My listings</a>
+<a href="messages.html">Messages</a>
+<a href="#how-it-works">How it works</a>
+        </nav>
+
+        <div class="nav-actions">
+  <button class="notification-bell" id="notification-bell" type="button" aria-label="Notifications" title="Notifications">🔔<span class="notification-count hidden" id="notification-count">0</span></button>
+  <span id="user-status">Browsing as guest</span>
+
+  <button class="auth-button" id="auth-button">Log in</button>
+
+  <div class="account-menu hidden" id="account-menu">
+    <button type="button" class="account-menu-toggle" id="account-menu-toggle" aria-haspopup="true" aria-expanded="false" aria-label="Account menu">
+      <span class="account-avatar">
+        <span id="account-avatar-placeholder">👤</span>
+        <img id="account-avatar-image" class="hidden" alt="" />
+      </span>
+      <span class="account-menu-caret">▾</span>
+    </button>
+
+    <div class="account-menu-dropdown hidden" id="account-menu-dropdown">
+      <p class="account-menu-email" id="account-menu-email"></p>
+      <button type="button" id="profile-button">👤 My Profile</button>
+      <button type="button" id="account-menu-logout">↪ Log out</button>
+    </div>
+  </div>
+
+  <button class="post-ad-button" id="open-listing-form">
+    + Post an Ad
+  </button>
+</div>
+      </div>
+    </header>
+
+    <main>
+      <section class="hero">
+        <div class="container">
+          <p class="eyebrow">🇸🇱 Sierra Leone's local marketplace</p>
+          <h1>Buy, sell and do business — the PZ way, online.</h1>
+          <p class="hero-text">
+            Discover products, vehicles, services and everyday essentials from people and businesses across Sierra Leone.
+          </p>
+
+          <form class="search-bar" id="search-form">
+            <input
+              id="search-input"
+              type="search"
+              placeholder="Search products or services..."
+              aria-label="Search products or services"
+            />
+
+            <select id="location-filter" aria-label="Filter by location">
+              <option value="">All locations</option>
+<option value="Freetown">Freetown</option>
+<option value="Bo">Bo</option>
+<option value="Kenema">Kenema</option>
+<option value="Makeni">Makeni</option>
+<option value="Koidu">Koidu</option>
+<option value="Waterloo">Waterloo</option>
+<option value="Port Loko">Port Loko</option>
+            </select>
+
+            <button type="submit">Search</button>
+          </form>
+
+          <div class="trust-bump" aria-label="Why buyers trust PZ Online">
+            <span class="trust-bump-item"><span class="icon">✓</span> Secure in-app chat</span>
+            <span class="trust-bump-item"><span class="icon">📞</span> Call or WhatsApp sellers directly</span>
+            <span class="trust-bump-item"><span class="icon">🛡</span> Buyer safety tips on every listing</span>
+          </div>
+        </div>
+      </section>
+
+      <p class="verification-message hidden" id="verification-message">
+  Your email address is not verified yet. Please check your inbox for the verification email.
+</p>
+      <section class="browse-categories container" aria-label="Browse categories">
+        <div class="section-heading">
+          <div>
+            <h2>Browse categories</h2>
+          </div>
+        </div>
+
+        <div class="category-grid">
+          <button class="category category-tile" data-category="Mobiles" type="button"><span class="category-tile-icon">📱</span><span>Mobiles</span></button>
+          <button class="category category-tile" data-category="Okada & Motorbikes" type="button"><span class="category-tile-icon">🏍️</span><span>Okada & Motorbikes</span></button>
+          <button class="category category-tile" data-category="Cars & Vehicles" type="button"><span class="category-tile-icon">🚗</span><span>Cars & Vehicles</span></button>
+          <button class="category category-tile" data-category="Electronics" type="button"><span class="category-tile-icon">💻</span><span>Electronics</span></button>
+          <button class="category category-tile" data-category="Phones & Accessories" type="button"><span class="category-tile-icon">📲</span><span>Phones & Accessories</span></button>
+          <button class="category category-tile" data-category="Home & Furniture" type="button"><span class="category-tile-icon">🛋️</span><span>Home & Furniture</span></button>
+          <button class="category category-tile" data-category="Land & Property" type="button"><span class="category-tile-icon">🏠</span><span>Land & Property</span></button>
+          <button class="category category-tile" data-category="Fashion" type="button"><span class="category-tile-icon">👗</span><span>Fashion</span></button>
+          <button class="category category-tile" data-category="Agriculture" type="button"><span class="category-tile-icon">🌾</span><span>Agriculture</span></button>
+          <button class="category category-tile" data-category="Food & Drinks" type="button"><span class="category-tile-icon">🍲</span><span>Food & Drinks</span></button>
+          <button class="category category-tile" data-category="Building Materials" type="button"><span class="category-tile-icon">🧱</span><span>Building Materials</span></button>
+          <button class="category category-tile" data-category="Generators & Solar" type="button"><span class="category-tile-icon">🔋</span><span>Generators & Solar</span></button>
+          <button class="category category-tile" data-category="Spare Parts" type="button"><span class="category-tile-icon">⚙️</span><span>Spare Parts</span></button>
+          <button class="category category-tile" data-category="Jobs" type="button"><span class="category-tile-icon">💼</span><span>Jobs</span></button>
+          <button class="category category-tile" data-category="Beauty" type="button"><span class="category-tile-icon">💄</span><span>Beauty</span></button>
+          <button class="category category-tile" data-category="Education" type="button"><span class="category-tile-icon">🎓</span><span>Education</span></button>
+          <button class="category category-tile" data-category="Services" type="button"><span class="category-tile-icon">🛠️</span><span>Services</span></button>
+        </div>
+      </section>
+
+      <section class="categories container" aria-label="Listing categories">
+        <button class="category active" data-category="All">🛍️ All</button>
+        <button class="category" data-category="Mobiles">📱 Mobiles</button>
+        <button class="category" data-category="Okada & Motorbikes">🏍️ Okada & Motorbikes</button>
+        <button class="category" data-category="Cars & Vehicles">🚗 Cars & Vehicles</button>
+        <button class="category" data-category="Electronics">💻 Electronics</button>
+        <button class="category" data-category="Phones & Accessories">📲 Phones & Accessories</button>
+        <button class="category" data-category="Home & Furniture">🛋️ Home & Furniture</button>
+        <button class="category" data-category="Land & Property">🏠 Land & Property</button>
+        <button class="category" data-category="Fashion">👗 Fashion</button>
+        <button class="category" data-category="Agriculture">🌾 Agriculture</button>
+        <button class="category" data-category="Food & Drinks">🍲 Food & Drinks</button>
+        <button class="category" data-category="Building Materials">🧱 Building Materials</button>
+        <button class="category" data-category="Generators & Solar">🔋 Generators & Solar</button>
+        <button class="category" data-category="Spare Parts">⚙️ Spare Parts</button>
+        <button class="category" data-category="Jobs">💼 Jobs</button>
+        <button class="category" data-category="Beauty">💄 Beauty</button>
+        <button class="category" data-category="Education">🎓 Education</button>
+        <button class="category" data-category="Services">🛠️ Services</button>
+      </section>
+
+      <section class="trending-section container" id="trending-section" aria-label="Trending listings">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">🔥 Hot right now</p>
+            <h2>Trending near you</h2>
+          </div>
+        </div>
+
+        <div class="carousel-wrap">
+          <button class="carousel-arrow carousel-prev" id="trending-prev" aria-label="Scroll left" type="button">‹</button>
+          <div class="carousel-track" id="trending-carousel">
+            <!-- JavaScript adds trending listing cards here. -->
+          </div>
+          <button class="carousel-arrow carousel-next" id="trending-next" aria-label="Scroll right" type="button">›</button>
+        </div>
+      </section>
+
+      <section class="listings-section container" id="listings">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Latest listings</p>
+            <h2>Explore nearby offers</h2>
+          </div>
+
+          <div class="listing-heading-tools">
+            <p id="listing-count" aria-live="polite"></p>
+            <div class="price-filters" aria-label="Filter by price">
+              <input id="min-price" type="number" min="0" placeholder="Min Le" aria-label="Minimum price" />
+              <input id="max-price" type="number" min="0" placeholder="Max Le" aria-label="Maximum price" />
+              <button id="price-filter" type="button">Apply</button>
+              <button id="clear-price-filter" class="text-button" type="button">Clear</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="listing-grid" id="listing-grid">
+          <!-- JavaScript adds listing cards here. -->
+        </div>
+
+        <p class="empty-message hidden" id="empty-message">
+          No listings found. Try another search or category.
+        </p>
+
+        <button class="load-more-button hidden" id="load-more-button" type="button">
+          Show more listings
+        </button>
+        <div id="load-more-sentinel" aria-hidden="true"></div>
+      </section>
+<section class="my-listings-section container hidden" id="my-listings">
+  <div class="section-heading">
+    <div>
+      <p class="eyebrow">Seller dashboard</p>
+      <h2>My listings</h2>
+    </div>
+
+    <button class="post-ad-button" id="dashboard-post-ad">
+      + Post an Ad
+    </button>
+
+    <div class="dashboard-section-heading">
+  <div>
+    <p class="eyebrow">Saved listings</p>
+    <h2>My Favourites ❤️</h2>
+  </div>
+</div>
+
+<div class="listing-grid" id="my-favourites-list">
+  <p class="empty-state" id="my-favourites-empty">
+    You haven't added any favourites yet.
+  </p>
+</div>
+  </div>
+
+  <p class="my-listings-message" id="my-listings-message">
+    Log in to view and manage the listings you posted.
+  </p>
+
+  <div class="listing-grid" id="my-listing-grid">
+    <!-- JavaScript adds the signed-in seller's listings here. -->
+  </div>
+</section>
+      <section class="how-it-works" id="how-it-works">
+        <div class="container">
+          <p class="eyebrow">Simple and local</p>
+          <h2>How PZ Online works</h2>
+
+          <div class="steps">
+            <article class="step">
+              <span>1</span>
+              <h3>Post an ad</h3>
+              <p>Add your product or service with a price and contact details.</p>
+            </article>
+
+            <article class="step">
+              <span>2</span>
+              <h3>Find listings</h3>
+              <p>Search and filter offers from sellers in your chosen location.</p>
+            </article>
+
+            <article class="step">
+              <span>3</span>
+              <h3>Contact the seller</h3>
+              <p>Use the provided contact details to ask questions or make an offer.</p>
+            </article>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="container">
+        <p>© 2026 PZ Online — Sierra Leone's online marketplace.</p>
+      </div>
+    </footer>
+
+    <!-- New listing modal -->
+    <div class="modal hidden" id="listing-modal" role="dialog" aria-modal="true">
+      <div class="modal-content">
+        <button class="close-button" id="close-listing-form" aria-label="Close">
+          ×
+        </button>
+
+        <h2>Post a new listing</h2>
+        <p>Fill in the details below so buyers can find you.</p>
+
+        <form id="listing-form">
+          <label>
+            Listing title
+            <input
+              id="title"
+              type="text"
+              placeholder="e.g. iPhone 13 in excellent condition"
+              required
+            />
+          </label>
+
+          <div class="form-row">
+            <label>
+              Price (Le)
+              <input id="price" type="number" min="0" placeholder="25000" required />
+            </label>
+
+            <label>
+              Category
+              <select id="category" required>
+                <option value="">Choose a category</option>
+                <option value="Mobiles">Mobiles</option>
+                <option value="Okada & Motorbikes">Okada & Motorbikes</option>
+                <option value="Cars & Vehicles">Cars & Vehicles</option>
+                <option value="Electronics">Electronics</option>
+                <option value="Phones & Accessories">Phones & Accessories</option>
+                <option value="Home & Furniture">Home & Furniture</option>
+                <option value="Land & Property">Land & Property</option>
+                <option value="Fashion">Fashion</option>
+                <option value="Agriculture">Agriculture</option>
+                <option value="Food & Drinks">Food & Drinks</option>
+                <option value="Building Materials">Building Materials</option>
+                <option value="Generators & Solar">Generators & Solar</option>
+                <option value="Spare Parts">Spare Parts</option>
+                <option value="Jobs">Jobs</option>
+                <option value="Beauty">Beauty</option>
+                <option value="Education">Education</option>
+                <option value="Services">Services</option>
+
+              </select>
+            </label>
+          </div>
+
+          <label>
+            Location
+            <select id="location" required>
+              <option value="">Choose your location</option>
+<option value="Freetown">Freetown</option>
+<option value="Bo">Bo</option>
+<option value="Kenema">Kenema</option>
+<option value="Makeni">Makeni</option>
+<option value="Koidu">Koidu</option>
+<option value="Waterloo">Waterloo</option>
+<option value="Port Loko">Port Loko</option>
+            </select>
+          </label>
+
+          <label>
+            Description
+            <textarea
+              id="description"
+              rows="4"
+              placeholder="Describe the product or service, its condition, and important details."
+              required
+            ></textarea>
+          </label>
+
+          <label>
+            Photos <small>(optional, up to 8)</small>
+            <input id="image-file" type="file" accept="image/*" multiple />
+            <input type="hidden" id="image" />
+            <input type="hidden" id="images" />
+            <div class="image-preview-grid" id="image-preview-grid"></div>
+            <p class="upload-status hidden" id="image-upload-status"></p>
+          </label>
+
+          <div class="form-row">
+            <label>
+              Seller name
+              <input id="seller-name" type="text" placeholder="Your name" required />
+            </label>
+
+            <label>
+              Phone number
+              <input
+                id="seller-phone"
+                type="tel"
+                placeholder="e.g. 78123456"
+                required
+              />
+            </label>
+          </div>
+
+          <button class="submit-listing" type="submit">Publish listing</button>
+        </form>
+      </div>
+    </div>
+    <!-- Profile Modal -->
+<div class="modal hidden" id="profile-modal" role="dialog" aria-modal="true">
+  <div class="modal-content profile-modal-content">
+    <button
+      class="close-button"
+      id="close-profile-modal"
+      aria-label="Close"
+      type="button"
+    >
+      ×
+    </button>
+
+    <h2>My Profile</h2>
+
+    <div class="profile-info">
+      <div class="profile-avatar" id="profile-avatar">
+        <span id="profile-avatar-placeholder">👤</span>
+        <img id="profile-avatar-image" class="hidden" alt="Profile picture" />
+      </div>
+      <label class="profile-photo-upload" for="profile-photo-input">
+        <span>📷 Add profile picture</span>
+        <input id="profile-photo-input" type="file" accept="image/*" />
+      </label>
+      <p class="upload-status hidden" id="profile-photo-status"></p>
+
+      <h3 id="profile-email">Not available</h3>
+
+      <p>
+        Member since:
+        <strong id="profile-created">Not available</strong>
+      </p>
+
+      <p>
+        My listings:
+        <strong id="profile-listing-count">0</strong>
+      </p>
+    </div>
+
+    <div class="profile-actions">
+      <button type="button" id="profile-view-listings">
+        View My Listings
+      </button>
+      <button type="button" id="profile-view-favourites">
+  My Favourites ❤️
+</button>
+
+      <button type="button" id="profile-logout">
+        Log out
+      </button>
+
+      <button type="button" id="profile-delete-account">
+        Delete my account
+      </button>
+    </div>
+  </div>
+</div>
+
+    <!-- Seller contact modal -->
+    <div class="modal hidden" id="contact-modal" role="dialog" aria-modal="true">
+      <div class="modal-content contact-content">
+        <button class="close-button" id="close-contact-modal" aria-label="Close">
+          ×
+        </button>
+
+        <p class="eyebrow">Contact seller</p>
+        <h2 id="contact-listing-title"></h2>
+        <p id="seller-contact-details"></p>
+
+        <div class="contact-actions-row">
+          <a class="call-seller-button" id="call-seller-button" href="#">📞 Call seller</a>
+          <a class="whatsapp-button" id="whatsapp-seller-button" href="#" target="_blank" rel="noopener">💬 WhatsApp</a>
+          <button class="message-seller-button" id="message-seller-button" type="button">
+            Message seller
+          </button>
+          <button class="block-seller-button" id="block-seller-button" type="button">
+            Block seller
+          </button>
+        </div>
+
+        <div class="trust-bump-card">
+          <h4>🛡 Trade safely</h4>
+          <ul>
+            <li>Meet in a public, well-lit place when possible.</li>
+            <li>Inspect the item before paying — never pay in advance for unseen goods.</li>
+            <li>Keep a record of your conversation using in-app messaging.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Make an offer modal -->
+    <div class="modal hidden" id="offer-modal" role="dialog" aria-modal="true">
+      <div class="modal-content offer-modal-content">
+        <button class="close-button" id="close-offer-modal" aria-label="Close" type="button">×</button>
+        <p class="eyebrow">Make an offer</p>
+        <h2 id="offer-listing-title">Make an offer</h2>
+        <p>Send the seller your offer and continue the conversation in PZ Online chat.</p>
+        <form id="offer-form">
+          <label>Your offer (Le)<input id="offer-amount" type="number" min="1" step="1" placeholder="e.g. 150000" required /></label>
+          <label>Message <small>(optional)</small><textarea id="offer-message" rows="3" placeholder="I can meet today if you accept."></textarea></label>
+          <button class="offer-submit-button" type="submit">Send offer</button>
+        </form>
+      </div>
+    </div>
+
+    <!-- Report listing modal -->
+    <div class="modal hidden" id="report-modal" role="dialog" aria-modal="true">
+      <div class="modal-content">
+        <button class="close-button" id="close-report-modal" aria-label="Close" type="button">×</button>
+        <p class="eyebrow">Help keep PZ Online safe</p>
+        <h2>Report this listing</h2>
+        <p id="report-listing-title"></p>
+        <form id="report-form">
+          <label>Reason<select id="report-reason" required><option value="">Choose a reason</option><option value="Scam or fraud">Scam or fraud</option><option value="Prohibited item">Prohibited item</option><option value="Fake or misleading listing">Fake or misleading listing</option><option value="Spam">Spam</option><option value="Other">Other</option></select></label>
+          <label>Details <small>(optional)</small><textarea id="report-details" rows="4" maxlength="500" placeholder="Tell us what looks wrong."></textarea></label>
+          <button class="report-submit-button" type="submit">Submit report</button>
+        </form>
+      </div>
+    </div>
+
+    <div class="notification-panel hidden" id="notification-panel">
+      <div class="notification-panel-header"><strong>Notifications</strong><button id="mark-notifications-read" type="button">Mark all read</button></div>
+      <div id="notification-list"><p class="notification-empty">No notifications yet.</p></div>
+    </div>
+
+   <!-- Account modal -->
+<div class="modal hidden" id="auth-modal" role="dialog" aria-modal="true">
+  <div class="modal-content auth-content">
+    <button class="close-button" id="close-auth-modal" aria-label="Close">
+      ×
+    </button>
+
+    <p class="eyebrow">Your PZ Online account</p>
+    <h2 id="auth-title">Create an account</h2>
+    <p id="auth-description">
+      Create an account to publish and manage your own listings.
+    </p>
+
+    <button
+      type="button"
+      class="google-signin-button"
+      id="google-signin-button"
+    >
+      Continue with Google
+    </button>
+
+    <p class="auth-divider"><span>or</span></p>
+
+    <form id="auth-form">
+      <label>
+        Email address
+        <input
+          id="auth-email"
+          type="email"
+          placeholder="you@example.com"
+          autocomplete="email"
+          required
+        />
+      </label>
+
+      <label>
+        Password
+        <input
+          id="auth-password"
+          type="password"
+          placeholder="At least 6 characters"
+          minlength="6"
+          autocomplete="new-password"
+          required
+        />
+      </label>
+      <button
+        type="button"
+        class="forgot-password-button"
+        id="forgot-password-button"
+      >
+        Forgot password?
+      </button>
+      
+      <p class="form-error hidden" id="auth-error" role="alert"></p>
+
+      <button class="submit-listing" id="auth-submit" type="submit">
+        Create account
+      </button>
+    </form>
+
+    <p class="auth-switch-text">
+      <span id="auth-switch-question">Already have an account?</span>
+      <button class="text-button" id="auth-switch-button" type="button">
+        Log in
+      </button>
+    </p>
+  </div>
+</div>
+  <script type="module" src="app.js"></script>
+  </body>
+</html>

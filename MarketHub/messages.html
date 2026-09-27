@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Chat with buyers and sellers on PZ Online." />
+    <title>Messages | PZ Online</title>
+
+    <link rel="stylesheet" href="style.css" />
+  </head>
+
+  <body>
+    <header class="site-header">
+      <div class="container nav">
+        <a class="logo" href="index.html">PZ<span>Online</span></a>
+
+        <nav class="nav-links" aria-label="Main navigation">
+          <a href="index.html#listings">Browse listings</a>
+          <a href="index.html#my-listings">My listings</a>
+          <a href="messages.html">Messages</a>
+          <a href="index.html#how-it-works">How it works</a>
+        </nav>
+
+        <div class="nav-actions">
+          <button class="notification-bell" id="notification-bell" type="button" aria-label="Notifications" title="Notifications">🔔<span class="notification-count hidden" id="notification-count">0</span></button>
+          <span id="user-status">Browsing as guest</span>
+          <button class="auth-button" id="auth-button">Log in</button>
+        </div>
+      </div>
+    </header>
+
+    <main class="container">
+      <p id="messages-signed-out" class="hidden">
+        Log in to view and send messages.
+      </p>
+
+      <div class="messages-layout hidden" id="messages-layout">
+        <div class="chat-panel">
+          <div class="chat-panel-header">
+            <h1>Chats</h1>
+            <div class="chat-search">
+              <span aria-hidden="true">🔍</span>
+              <input
+                type="search"
+                id="chat-search-input"
+                placeholder="Search chats..."
+                aria-label="Search chats"
+              />
+            </div>
+          </div>
+
+          <div class="chat-tabs" role="tablist">
+            <button class="chat-tab active" data-filter="all" type="button">
+              All
+            </button>
+            <button class="chat-tab" data-filter="buying" type="button">
+              Buying <span class="chat-tab-count" id="buying-count"></span>
+            </button>
+            <button class="chat-tab" data-filter="selling" type="button">
+              Selling <span class="chat-tab-count" id="selling-count"></span>
+            </button>
+          </div>
+
+          <div class="conversation-list" id="conversation-list">
+            <p class="empty-conversations" id="conversation-list-empty">
+              You have no conversations yet.
+            </p>
+          </div>
+        </div>
+
+        <div class="message-thread no-selection" id="message-thread">
+          <p class="message-thread-empty" id="message-thread-empty">
+            Select a conversation to start chatting.
+          </p>
+        </div>
+      </div>
+    </main>
+
+    <footer class="site-footer">
+      <div class="container">
+        <p>© 2026 PZ Online — Sierra Leone marketplace.</p><p class="footer-links"><a href="terms.html">Terms & Conditions</a><a href="privacy.html">Privacy Policy</a></p>
+      </div>
+    </footer>
+
+    <div class="notification-panel hidden" id="notification-panel">
+      <div class="notification-panel-header"><strong>Notifications</strong><button id="mark-notifications-read" type="button">Mark all read</button></div>
+      <div id="notification-list"><p class="notification-empty">No notifications yet.</p></div>
+    </div>
+
+    <!-- Account modal -->
+    <div class="modal hidden" id="auth-modal" role="dialog" aria-modal="true">
+      <div class="modal-content auth-content">
+        <button class="close-button" id="close-auth-modal" aria-label="Close">
+          ×
+        </button>
+
+        <p class="eyebrow">Your PZ Online account</p>
+        <h2 id="auth-title">Create an account</h2>
+        <p id="auth-description">
+          Create an account to publish and manage your own listings.
+        </p>
+
+        <button
+          type="button"
+          class="google-signin-button"
+          id="google-signin-button"
+        >
+          Continue with Google
+        </button>
+
+        <p class="auth-divider"><span>or</span></p>
+
+        <form id="auth-form">
+          <label>
+            Email address
+            <input
+              id="auth-email"
+              type="email"
+              placeholder="you@example.com"
+              autocomplete="email"
+              required
+            />
+          </label>
+
+          <label>
+            Password
+            <input
+              id="auth-password"
+              type="password"
+              placeholder="At least 6 characters"
+              minlength="6"
+              autocomplete="new-password"
+              required
+            />
+          </label>
+          <button
+            type="button"
+            class="forgot-password-button"
+            id="forgot-password-button"
+          >
+            Forgot password?
+          </button>
+
+          <p class="form-error hidden" id="auth-error" role="alert"></p>
+
+          <button class="submit-listing" id="auth-submit" type="submit">
+            Create account
+          </button>
+        </form>
+
+        <p class="auth-switch-text">
+          <span id="auth-switch-question">Already have an account?</span>
+          <button class="text-button" id="auth-switch-button" type="button">
+            Log in
+          </button>
+        </p>
+      </div>
+    </div>
+
+    <script type="module" src="messages.js"></script>
+  </body>
+</html>

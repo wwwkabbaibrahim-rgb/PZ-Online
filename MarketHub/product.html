@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Listing details on PZ Online." />
+    <title>Listing | PZ Online</title>
+
+    <link rel="stylesheet" href="style.css" />
+  </head>
+
+  <body>
+    <header class="site-header">
+      <div class="container nav">
+        <a class="logo" href="index.html">PZ<span>Online</span></a>
+
+        <nav class="nav-links" aria-label="Main navigation">
+          <a href="index.html#listings">Browse listings</a>
+          <a href="index.html#my-listings">My listings</a>
+          <a href="messages.html">Messages</a>
+          <a href="index.html#how-it-works">How it works</a>
+        </nav>
+
+        <div class="nav-actions">
+          <button class="notification-bell" id="notification-bell" type="button" aria-label="Notifications" title="Notifications">🔔<span class="notification-count hidden" id="notification-count">0</span></button>
+          <span id="user-status">Browsing as guest</span>
+          <button class="auth-button" id="auth-button">Log in</button>
+        </div>
+      </div>
+    </header>
+
+    <main class="container">
+      <a class="product-back-link" id="product-back-link" href="index.html#listings">&larr; Back to listings</a>
+
+      <p id="product-loading">Loading listing...</p>
+
+      <div id="product-not-found" class="hidden">
+        <h2>Listing not found</h2>
+        <p>This listing may have been removed or the link is incorrect.</p>
+        <a href="index.html#listings">Browse other listings</a>
+      </div>
+
+      <section class="product-detail hidden" id="product-detail">
+        <div class="product-gallery">
+          <img class="product-detail-image" id="product-image" src="" alt="" />
+          <div class="product-gallery-thumbs" id="product-gallery-thumbs"></div>
+        </div>
+
+        <div class="product-detail-info">
+          <span class="listing-category" id="product-category"></span>
+          <h1 id="product-title"></h1>
+          <p class="product-detail-price" id="product-price"></p>
+
+          <div class="product-detail-meta">
+            <span id="product-location"></span>
+            <span id="product-date"></span>
+          </div>
+
+          <p class="product-detail-description" id="product-description"></p>
+
+          <div class="product-seller-box">
+            <p><strong>Seller:</strong> <span id="product-seller-name"></span></p>
+            <p><strong>Phone:</strong> <span id="product-seller-phone"></span></p>
+          </div>
+
+          <div class="product-detail-actions">
+            <a class="call-seller-button" id="product-call-button" href="#">📞 Call seller</a>
+            <a class="whatsapp-button" id="product-whatsapp-button" href="#" target="_blank" rel="noopener">💬 WhatsApp</a>
+            <button class="message-seller-button" id="product-message-button" type="button">Message seller</button>
+            <button class="make-offer-button product-offer-button" id="product-offer-button" type="button">Make an offer</button>
+            <button class="share-button" id="product-share-button" type="button">↗ Share</button>
+            <button class="favorite-button" id="product-favorite-button" type="button">♡</button>
+          </div>
+
+          <div class="trust-bump-card">
+            <h4>🛡 Trade safely</h4>
+            <ul>
+              <li>Meet in a public, well-lit place when possible.</li>
+              <li>Inspect the item before paying — never pay in advance for unseen goods.</li>
+              <li>Keep a record of your conversation using in-app messaging.</li>
+            </ul>
+          </div>
+
+          <div class="seller-rating-card" id="seller-rating-card">
+            <div>
+              <p class="eyebrow">Seller trust</p>
+              <h3 id="seller-rating-summary">No ratings yet</h3>
+              <p id="seller-rating-count">Be the first to rate your experience.</p><div id="seller-reviews-list" class="seller-reviews-list"></div>
+            </div>
+            <button class="rate-button" id="product-rate-button" type="button">Rate seller</button>
+          </div>
+
+          <div class="product-safety-actions">
+            <button class="product-report-button" id="product-report-button" type="button">Report listing</button>
+            <button class="product-block-button" id="product-block-button" type="button">Block seller</button>
+          </div>
+
+          <p class="product-owner-note hidden" id="product-owner-note">
+            This is your listing. Manage it from
+            <a href="index.html#my-listings">My listings</a>.
+          </p>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="container">
+        <p>© 2026 PZ Online — Sierra Leone marketplace.</p><p class="footer-links"><a href="terms.html">Terms & Conditions</a><a href="privacy.html">Privacy Policy</a></p>
+      </div>
+    </footer>
+
+    <div class="notification-panel hidden" id="notification-panel">
+      <div class="notification-panel-header"><strong>Notifications</strong><button id="mark-notifications-read" type="button">Mark all read</button></div>
+      <div id="notification-list"><p class="notification-empty">No notifications yet.</p></div>
+    </div>
+
+    <div class="modal hidden" id="rating-modal" role="dialog" aria-modal="true">
+      <div class="modal-content">
+        <button class="close-button" id="close-rating-modal" type="button" aria-label="Close">×</button>
+        <p class="eyebrow">Trust & ratings</p>
+        <h2>Rate this seller</h2>
+        <form id="rating-form">
+          <label>Rating<select id="rating-score" required><option value="">Choose a rating</option><option value="5">★★★★★ 5</option><option value="4">★★★★ 4</option><option value="3">★★★ 3</option><option value="2">★★ 2</option><option value="1">★ 1</option></select></label>
+          <label>Review <small>(optional)</small><textarea id="rating-comment" rows="4" maxlength="500" placeholder="How was your experience?"></textarea></label>
+          <button class="submit-listing" type="submit">Submit rating</button>
+        </form>
+      </div>
+    </div>
+
+    <!-- Account modal -->
+    <div class="modal hidden" id="auth-modal" role="dialog" aria-modal="true">
+      <div class="modal-content auth-content">
+        <button class="close-button" id="close-auth-modal" aria-label="Close">
+          ×
+        </button>
+
+        <p class="eyebrow">Your PZ Online account</p>
+        <h2 id="auth-title">Create an account</h2>
+        <p id="auth-description">
+          Create an account to publish and manage your own listings.
+        </p>
+
+        <button
+          type="button"
+          class="google-signin-button"
+          id="google-signin-button"
+        >
+          Continue with Google
+        </button>
+
+        <p class="auth-divider"><span>or</span></p>
+
+        <form id="auth-form">
+          <label>
+            Email address
+            <input
+              id="auth-email"
+              type="email"
+              placeholder="you@example.com"
+              autocomplete="email"
+              required
+            />
+          </label>
+
+          <label>
+            Password
+            <input
+              id="auth-password"
+              type="password"
+              placeholder="At least 6 characters"
+              minlength="6"
+              autocomplete="new-password"
+              required
+            />
+          </label>
+          <button
+            type="button"
+            class="forgot-password-button"
+            id="forgot-password-button"
+          >
+            Forgot password?
+          </button>
+
+          <p class="form-error hidden" id="auth-error" role="alert"></p>
+
+          <button class="submit-listing" id="auth-submit" type="submit">
+            Create account
+          </button>
+        </form>
+
+        <p class="auth-switch-text">
+          <span id="auth-switch-question">Already have an account?</span>
+          <button class="text-button" id="auth-switch-button" type="button">
+            Log in
+          </button>
+        </p>
+      </div>
+    </div>
+
+    <script type="module" src="product.js"></script>
+  </body>
+</html>
