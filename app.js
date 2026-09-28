@@ -26,8 +26,6 @@ import {
   getDocs,
   getFirestore,
   onSnapshot,
-  orderBy,
-  query,
   serverTimestamp,
   setDoc,
   updateDoc,
@@ -107,6 +105,16 @@ const profileViewFavouritesButton = document.getElementById(
 const myFavouritesList = document.getElementById("my-favourites-list");
 const myFavouritesEmpty = document.getElementById("my-favourites-empty");
 
+function rememberRecentlyViewed(listingId) {
+  try {
+    const recent = JSON.parse(localStorage.getItem("pz-recently-viewed") || "[]").filter((id) => id !== listingId);
+    recent.unshift(listingId);
+    localStorage.setItem("pz-recently-viewed", JSON.stringify(recent.slice(0, 30)));
+  } catch (error) {
+    console.warn("Could not save recently viewed listing", error);
+  }
+}
+
 const profileLogoutButton = document.getElementById("profile-logout");
 const profileDeleteAccountButton = document.getElementById("profile-delete-account");
 const profileAvatarImage = document.getElementById("profile-avatar-image");
@@ -128,6 +136,7 @@ const minPriceInput = document.getElementById("min-price");
 const maxPriceInput = document.getElementById("max-price");
 const priceFilterButton = document.getElementById("price-filter");
 const clearPriceFilterButton = document.getElementById("clear-price-filter");
+const saveSearchButton = document.getElementById("save-search-button");
 const categoryButtons = document.querySelectorAll(".category");
 
 const listingModal = document.getElementById("listing-modal");
@@ -179,6 +188,7 @@ const googleSigninButton = document.getElementById("google-signin-button");
 
 let listings = [];
 let selectedCategory = "All";
+let verifiedSellerIds = new Set();
 let currentUser = null;
 let favoriteListingIds = new Set();
 let blockedUserIds = new Set();
@@ -227,6 +237,7 @@ async function loadBlockedUsers() {
 }
 
 function renderMyFavourites() {
+  if (!myFavouritesList || !myFavouritesEmpty) return;
   myFavouritesList.innerHTML = "";
 
   if (!currentUser || favoriteListingIds.size === 0) {
@@ -332,6 +343,23 @@ favoriteButton.addEventListener("click", async (event) => {
 
       favoriteListingIds.add(listing.id);
 
+      if (listing.ownerId && listing.ownerId !== currentUser.uid) {
+        try {
+          await addDoc(collection(db, "notifications"), {
+            userId: listing.ownerId,
+            actorId: currentUser.uid,
+            type: "favorite",
+            title: "Someone saved your listing",
+            message: `${currentUser.email || "A buyer"} added ${listing.title} to their favourites.`,
+            listingId: listing.id,
+            read: false,
+            createdAt: serverTimestamp(),
+          });
+        } catch (notificationError) {
+          console.warn("Could not create favourite notification", notificationError);
+        }
+      }
+
       favoriteButton.textContent = "♥";
       renderMyFavourites();
       favoriteButton.setAttribute(
@@ -349,6 +377,7 @@ favoriteButton.addEventListener("click", async (event) => {
   const imageLink = document.createElement("a");
   imageLink.className = "listing-image-link";
   imageLink.href = `product.html?id=${listing.id}`;
+  imageLink.addEventListener("click", () => rememberRecentlyViewed(listing.id));
 
   const image = document.createElement("img");
   image.className = "listing-image";
@@ -373,12 +402,29 @@ favoriteButton.addEventListener("click", async (event) => {
   category.className = "listing-category";
   category.textContent = listing.category;
 
+  if (listing.featured) {
+    card.classList.add("is-featured");
+    const featuredTag = document.createElement("span");
+    featuredTag.className = "featured-ribbon";
+    featuredTag.textContent = "⭐ Featured";
+    imageLink.appendChild(featuredTag);
+  }
+
+  let verifiedTag = null;
+
+  if (listing.ownerId && verifiedSellerIds.has(listing.ownerId)) {
+    verifiedTag = document.createElement("span");
+    verifiedTag.className = "verified-seller-badge";
+    verifiedTag.textContent = "✓ Verified seller";
+  }
+
   const title = document.createElement("h3");
   title.className = "listing-title";
 
   const titleLink = document.createElement("a");
   titleLink.className = "listing-title-link";
   titleLink.href = `product.html?id=${listing.id}`;
+  titleLink.addEventListener("click", () => rememberRecentlyViewed(listing.id));
   titleLink.textContent = listing.title;
 
   title.appendChild(titleLink);
@@ -424,7 +470,7 @@ favoriteButton.addEventListener("click", async (event) => {
   shareButton.addEventListener("click", async (event) => { event.preventDefault(); event.stopPropagation(); await shareListing(listing); });
 
   cardActions.append(offerButton, contactButton);
-  content.append(category, title, price, meta, cardActions, shareButton, reportButton, favoriteButton);
+  content.append(category, ...(verifiedTag ? [verifiedTag] : []), title, price, meta, cardActions, shareButton, reportButton, favoriteButton);
   card.append(imageLink, content);
 
   return card;
@@ -477,6 +523,8 @@ function openEditListingForm(listing) {
   document.getElementById("description").value = listing.description || "";
   document.getElementById("seller-name").value = listing.sellerName || "";
   document.getElementById("seller-phone").value = listing.sellerPhone || "";
+  const statusField = document.getElementById("status");
+  if (statusField) statusField.value = listing.status || "available";
 
   imageFileInput.value = "";
   const existingImages = Array.isArray(listing.images) && listing.images.length ? listing.images : (listing.image ? [listing.image] : []);
@@ -488,6 +536,7 @@ function openEditListingForm(listing) {
   renderImagePreviews(existingImages);
 
   listingForm.dataset.editingId = listing.id;
+  listingModal.classList.add("edit-mode");
 
   listingModal.querySelector("h2").textContent = "Edit listing";
 
@@ -507,6 +556,7 @@ function openEditListingForm(listing) {
   listingModal.classList.remove("hidden");
 }
 function renderMyListings() {
+  if (!myListingsSection || !myListingGrid || !myListingsMessage) return;
   if (!currentUser) {
     myListingsSection.classList.add("hidden");
     return;
@@ -536,20 +586,31 @@ function renderMyListings() {
 const LISTINGS_PAGE_SIZE = 12;
 let visibleListingsCount = LISTINGS_PAGE_SIZE;
 let currentFilteredListings = [];
+let appliedMinPrice = "";
+let appliedMaxPrice = "";
 
 function renderListings() {
   const searchTerm = searchInput.value.trim().toLowerCase();
   const chosenLocation = locationFilter.value;
-  const minPrice = Number(minPriceInput?.value || 0);
-  const maxPrice = Number(maxPriceInput?.value || 0);
+  const minPrice = Number(appliedMinPrice || 0);
+  const maxPrice = Number(appliedMaxPrice || 0);
 
   currentFilteredListings = listings.filter((listing) => {
     if (blockedUserIds.has(listing.ownerId)) return false;
 
+    const titleText = String(listing.title || "").toLowerCase();
+    const descriptionText = String(listing.description || "").toLowerCase();
+    const categoryText = String(listing.category || "").toLowerCase();
+    const sellerText = String(listing.sellerName || "").toLowerCase();
+    const locationText = String(listing.location || "").toLowerCase();
+
     const matchesSearch =
-      listing.title.toLowerCase().includes(searchTerm) ||
-      listing.description.toLowerCase().includes(searchTerm) ||
-      listing.category.toLowerCase().includes(searchTerm);
+      !searchTerm ||
+      titleText.includes(searchTerm) ||
+      descriptionText.includes(searchTerm) ||
+      categoryText.includes(searchTerm) ||
+      sellerText.includes(searchTerm) ||
+      locationText.includes(searchTerm);
 
         const matchesCategory =
       selectedCategory === "All" || listing.category === selectedCategory;
@@ -593,7 +654,11 @@ function loadMoreListings() {
 function renderTrendingCarousel() {
   if (!trendingCarousel) return;
 
-  const trendingListings = listings.slice(0, 10);
+  const featuredFirst = [
+    ...listings.filter((listing) => listing.featured),
+    ...listings.filter((listing) => !listing.featured),
+  ];
+  const trendingListings = featuredFirst.slice(0, 10);
   trendingCarousel.innerHTML = "";
 
   trendingListings.forEach((listing) => {
@@ -932,7 +997,8 @@ function showAuthError(error) {
   authError.classList.remove("hidden");
 }
 
-openListingFormButton.addEventListener("click", () => {
+openListingFormButton.addEventListener("click", (event) => {
+  event.preventDefault();
   if (!currentUser) {
     setAuthMode("signup");
     authModal.classList.remove("hidden");
@@ -941,6 +1007,10 @@ openListingFormButton.addEventListener("click", () => {
 
   if (!listingForm.dataset.editingId) {
     resetImageField();
+    listingModal.classList.remove("edit-mode");
+    listingModal.querySelector("h2").textContent = "Post a new listing";
+    const descriptionText = listingModal.querySelector(".modal-content > p");
+    if (descriptionText) descriptionText.textContent = "Fill in the details below so buyers can find you.";
   }
 
   listingModal.classList.remove("hidden");
@@ -956,28 +1026,40 @@ authButton.addEventListener("click", async () => {
   authModal.classList.remove("hidden");
 });
 
-closeListingFormButton.addEventListener("click", () => closeModal(listingModal));
+closeListingFormButton.addEventListener("click", () => { delete listingForm.dataset.editingId; listingModal.classList.remove("edit-mode"); closeModal(listingModal); });
 closeContactModalButton.addEventListener("click", () => closeModal(contactModal));
 closeAuthModalButton.addEventListener("click", () => closeModal(authModal));
 
-dashboardPostAdButton.addEventListener("click", () => {
+dashboardPostAdButton?.addEventListener("click", (event) => {
+  event.preventDefault();
   if (!listingForm.dataset.editingId) {
     resetImageField();
+    listingModal.classList.remove("edit-mode");
+    listingModal.querySelector("h2").textContent = "Post a new listing";
+    const descriptionText = listingModal.querySelector(".modal-content > p");
+    if (descriptionText) descriptionText.textContent = "Fill in the details below so buyers can find you.";
   }
 
   listingModal.classList.remove("hidden");
 });
 
-closeProfileModalButton.addEventListener("click", () => {
+closeProfileModalButton?.addEventListener("click", () => {
   profileModal.classList.add("hidden");
 });
 
-profileButton.addEventListener("click", () => {
+profileButton?.addEventListener("click", (event) => {
+  if (profileButton.tagName === "A" && profileButton.getAttribute("href")) return;
+  event.preventDefault();
   accountMenuDropdown?.classList.add("hidden");
 
   if (!currentUser) {
     setAuthMode("login");
     authModal.classList.remove("hidden");
+    return;
+  }
+
+  if (!profileModal) {
+    window.location.href = "profile.html";
     return;
   }
 
@@ -1001,7 +1083,7 @@ profileButton.addEventListener("click", () => {
 
   profileModal.classList.remove("hidden");
 });
-profileViewListingsButton.addEventListener("click", () => {
+profileViewListingsButton?.addEventListener("click", () => {
   profileModal.classList.add("hidden");
 
   myListingsSection.scrollIntoView({
@@ -1009,7 +1091,7 @@ profileViewListingsButton.addEventListener("click", () => {
   });
 });
 
-profileViewFavouritesButton.addEventListener("click", () => {
+profileViewFavouritesButton?.addEventListener("click", () => {
   profileModal.classList.add("hidden");
 
   myFavouritesList.scrollIntoView({
@@ -1037,7 +1119,7 @@ profilePhotoInput?.addEventListener("change", async () => {
   }
 });
 
-profileLogoutButton.addEventListener("click", async () => {
+profileLogoutButton?.addEventListener("click", async () => {
   await signOut(auth);
   profileModal.classList.add("hidden");
 });
@@ -1200,21 +1282,66 @@ forgotPasswordButton.addEventListener("click", async () => {
     forgotPasswordButton.textContent = "Forgot password?";
   }
 });
-searchForm.addEventListener("submit", (event) => {
+searchForm?.addEventListener("submit", (event) => {
   event.preventDefault();
   renderListings();
+
+  // Make the Search button visibly do something even when the user is at the top of the page.
+  // Filtering remains on this page; no reload or loss of the current marketplace state.
+  document.getElementById("listings")?.scrollIntoView({ behavior: "smooth", block: "start" });
 });
 
 searchInput.addEventListener("input", renderListings);
 locationFilter.addEventListener("change", renderListings);
-priceFilterButton?.addEventListener("click", renderListings);
-clearPriceFilterButton?.addEventListener("click", () => { if (minPriceInput) minPriceInput.value = ""; if (maxPriceInput) maxPriceInput.value = ""; renderListings(); });
+async function saveCurrentSearch() {
+  if (!currentUser) { setAuthMode("login"); authModal.classList.remove("hidden"); return; }
+  const payload = { query: searchInput?.value.trim() || "", location: locationFilter?.value || "", category: selectedCategory || "All", minPrice: appliedMinPrice || "", maxPrice: appliedMaxPrice || "", createdAt: serverTimestamp() };
+  if (!payload.query && !payload.location && (!payload.category || payload.category === "All") && !payload.minPrice && !payload.maxPrice) { alert("Add a search term or filter before saving a search."); return; }
+  try {
+    const snap = await getDocs(collection(db, "users", currentUser.uid, "savedSearches"));
+    const duplicate = snap.docs.some(d => { const x=d.data(); return (x.query||"")===payload.query && (x.location||"")===payload.location && (x.category||"All")===payload.category && String(x.minPrice||"")===String(payload.minPrice||"") && String(x.maxPrice||"")===String(payload.maxPrice||""); });
+    if (duplicate) { alert("This search is already saved."); return; }
+    await addDoc(collection(db, "users", currentUser.uid, "savedSearches"), payload);
+    saveSearchButton.textContent = "✓ Search saved";
+    setTimeout(() => { if (saveSearchButton) saveSearchButton.textContent = "♡ Save search"; }, 1800);
+  } catch (error) { console.error("Could not save search", error); alert("The search could not be saved. Please try again."); }
+}
 
-categoryButtons.forEach((button) => {
-  button.addEventListener("click", () => {
+function applyPriceFilters() {
+  const minRaw = (minPriceInput?.value || "").trim();
+  const maxRaw = (maxPriceInput?.value || "").trim();
+  const min = minRaw === "" ? "" : Number(minRaw);
+  const max = maxRaw === "" ? "" : Number(maxRaw);
+  if (min !== "" && Number.isNaN(min)) return;
+  if (max !== "" && Number.isNaN(max)) return;
+  if (min !== "" && max !== "" && min > max) {
+    alert("Minimum price cannot be higher than maximum price.");
+    return;
+  }
+  appliedMinPrice = minRaw;
+  appliedMaxPrice = maxRaw;
+  renderListings();
+}
+priceFilterButton?.addEventListener("click", applyPriceFilters);
+[minPriceInput, maxPriceInput].forEach((input) => input?.addEventListener("keydown", (event) => {
+  if (event.key === "Enter") { event.preventDefault(); applyPriceFilters(); }
+}));
+saveSearchButton?.addEventListener("click", saveCurrentSearch);
+
+clearPriceFilterButton?.addEventListener("click", () => {
+  if (minPriceInput) minPriceInput.value = "";
+  if (maxPriceInput) maxPriceInput.value = "";
+  appliedMinPrice = "";
+  appliedMaxPrice = "";
+  renderListings();
+});
+
+function bindCategoryButton(button) {
+  button.addEventListener("click", (event) => {
+    if (button.tagName === "A" && button.getAttribute("href")) return;
     selectedCategory = button.dataset.category;
 
-    categoryButtons.forEach((categoryButton) => {
+    document.querySelectorAll(".category").forEach((categoryButton) => {
       categoryButton.classList.remove("active");
     });
 
@@ -1227,7 +1354,10 @@ categoryButtons.forEach((button) => {
         .scrollIntoView({ behavior: "smooth", block: "start" });
     }
   });
-});
+}
+
+categoryButtons.forEach(bindCategoryButton);
+
 
 listingForm.addEventListener("submit", async (event) => {
   event.preventDefault();
@@ -1274,6 +1404,7 @@ listingForm.addEventListener("submit", async (event) => {
     images: (() => { try { return JSON.parse(document.getElementById("images").value || "[]"); } catch { return []; } })(),
     sellerName: document.getElementById("seller-name").value.trim(),
     sellerPhone: document.getElementById("seller-phone").value.trim(),
+    status: document.getElementById("status")?.value || "available",
   };
 
   try {
@@ -1295,6 +1426,7 @@ listingForm.addEventListener("submit", async (event) => {
     resetImageField();
 
     delete listingForm.dataset.editingId;
+    listingModal.classList.remove("edit-mode");
 
     listingModal.querySelector("h2").textContent =
       "Post a new listing";
@@ -1313,7 +1445,7 @@ listingForm.addEventListener("submit", async (event) => {
 
     selectedCategory = "All";
 
-    categoryButtons.forEach((button) => {
+    document.querySelectorAll(".category").forEach((button) => {
       button.classList.toggle(
         "active",
         button.dataset.category === "All"
@@ -1341,7 +1473,118 @@ listingForm.addEventListener("submit", async (event) => {
         : "Publish listing";
   }
 });
+
+// ---------- Admin-controlled features (verified sellers, categories, banner, suspension) ----------
+
+async function loadVerifiedSellers() {
+  try {
+    const snapshot = await getDocs(collection(db, "verifiedSellers"));
+    verifiedSellerIds = new Set(snapshot.docs.map((d) => d.id));
+    renderListings();
+  } catch (error) {
+    console.error("Could not load verified sellers:", error);
+  }
+}
+
+async function loadCustomCategories() {
+  try {
+    const snapshot = await getDocs(collection(db, "categories"));
+    const custom = snapshot.docs
+      .map((d) => d.data())
+      .filter((c) => c.name)
+      .sort((a, b) => (a.order || 0) - (b.order || 0));
+
+    const grid = document.getElementById("category-grid");
+    const pills = document.getElementById("category-pills");
+    const select = document.getElementById("category");
+    const existing = new Set(
+      [...document.querySelectorAll(".category")].map((b) => b.dataset.category)
+    );
+
+    custom.forEach((category) => {
+      if (existing.has(category.name)) return;
+      existing.add(category.name);
+      const icon = category.icon || "🏷️";
+
+      if (grid) {
+        const tile = document.createElement("button");
+        tile.type = "button";
+        tile.className = "category category-tile";
+        tile.dataset.category = category.name;
+        const iconSpan = document.createElement("span");
+        iconSpan.className = "category-tile-icon";
+        iconSpan.textContent = icon;
+        const label = document.createElement("span");
+        label.textContent = category.name;
+        tile.append(iconSpan, label);
+        grid.appendChild(tile);
+        bindCategoryButton(tile);
+      }
+
+      if (pills) {
+        const pill = document.createElement("button");
+        pill.type = "button";
+        pill.className = "category";
+        pill.dataset.category = category.name;
+        pill.textContent = `${icon} ${category.name}`;
+        pills.appendChild(pill);
+        bindCategoryButton(pill);
+      }
+
+      if (select) {
+        const option = document.createElement("option");
+        option.value = category.name;
+        option.textContent = category.name;
+        select.appendChild(option);
+      }
+    });
+  } catch (error) {
+    console.error("Could not load custom categories:", error);
+  }
+}
+
+async function loadSiteBanner() {
+  const banner = document.getElementById("site-banner");
+  if (!banner) return;
+
+  try {
+    const snap = await getDoc(doc(db, "settings", "banner"));
+    const data = snap.exists() ? snap.data() : null;
+
+    if (data && data.enabled && data.message) {
+      banner.textContent = data.message;
+      banner.classList.remove("hidden");
+    } else {
+      banner.classList.add("hidden");
+    }
+  } catch (error) {
+    console.error("Could not load site banner:", error);
+  }
+}
+
+async function isCurrentUserSuspended(user) {
+  if (!user) return false;
+
+  try {
+    const snap = await getDoc(doc(db, "suspensions", user.uid));
+    return snap.exists() && snap.data().suspended === true;
+  } catch (error) {
+    console.error("Could not check suspension:", error);
+    return false;
+  }
+}
+
+loadVerifiedSellers();
+loadCustomCategories();
+loadSiteBanner();
+
 onAuthStateChanged(auth, async (user) => {
+  if (user && (await isCurrentUserSuspended(user))) {
+    alert("Your account has been suspended. Please contact PZ Online support if you think this is a mistake.");
+    await signOut(auth);
+    return;
+  }
+
   currentUser = user;
 
 if (currentUser) {
@@ -1390,6 +1633,7 @@ if (currentUser && !currentUser.emailVerified) {
 accountMenuToggle?.addEventListener("click", (event) => {
   event.stopPropagation();
   accountMenuDropdown?.classList.toggle("hidden");
+  accountMenuToggle?.setAttribute("aria-expanded", String(!accountMenuDropdown?.classList.contains("hidden")));
 });
 
 document.addEventListener("click", (event) => {
@@ -1407,10 +1651,38 @@ accountMenuLogout?.addEventListener("click", async () => {
   await signOut(auth);
 });
 
-const listingsQuery = query(
-  collection(db, "listings"),
-  orderBy("createdAt", "desc")
-);
+const pageParams = new URLSearchParams(window.location.search);
+const loginRequested = pageParams.get("login") === "1";
+const postRequested = pageParams.get("post") === "1";
+if (loginRequested || postRequested) {
+  setTimeout(() => {
+    if (postRequested) {
+      if (currentUser) {
+        listingModal.classList.remove("hidden");
+      } else {
+        setAuthMode("signup");
+        authModal.classList.remove("hidden");
+      }
+    } else if (!currentUser) {
+      setAuthMode("login");
+      authModal.classList.remove("hidden");
+    }
+  }, 500);
+}
+
+const listingsQuery = collection(db, "listings");
+
+// Fast first paint: reuse a small local cache while Firestore loads the current data.
+// This does not replace Firestore; it only prevents a blank/slow-feeling marketplace on repeat visits.
+try {
+  const cachedListings = JSON.parse(localStorage.getItem("pz-listings-cache") || "[]");
+  if (Array.isArray(cachedListings) && cachedListings.length) {
+    listings = cachedListings;
+    renderListings();
+  }
+} catch (error) {
+  console.warn("Could not restore listing cache", error);
+}
 
 onSnapshot(
   listingsQuery,
@@ -1419,6 +1691,30 @@ onSnapshot(
       id: listingDocument.id,
       ...listingDocument.data(),
     }));
+    listings.sort((a,b) => { const ta=a.createdAt?.toMillis?.() || 0; const tb=b.createdAt?.toMillis?.() || 0; return tb-ta; });
+
+    try {
+      // Cache only the first 60 cards and strip large gallery arrays so localStorage stays small.
+      const cache = listings.slice(0, 60).map((item) => ({
+        id: item.id,
+        title: item.title || "",
+        price: item.price ?? 0,
+        category: item.category || "Other",
+        location: item.location || "",
+        description: item.description || "",
+        sellerName: item.sellerName || "Seller",
+        sellerPhone: item.sellerPhone || "",
+        ownerId: item.ownerId || "",
+        image: item.image || (Array.isArray(item.images) ? item.images[0] : ""),
+        featured: !!item.featured,
+        status: item.status || "available",
+        views: Number(item.views || 0),
+        createdAt: item.createdAt?.toMillis?.() ? { seconds: Math.floor(item.createdAt.toMillis() / 1000) } : null
+      }));
+      localStorage.setItem("pz-listings-cache", JSON.stringify(cache));
+    } catch (error) {
+      console.warn("Could not cache listings", error);
+    }
 
     renderListings();
     renderMyListings();

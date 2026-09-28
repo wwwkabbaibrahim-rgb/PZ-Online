@@ -43,6 +43,49 @@
     .report-status-toggle-button{border:0;cursor:pointer;font-weight:700;transition:opacity .15s}
     .report-status-toggle-button:hover{opacity:.75}
     .status{display:inline-block;padding:4px 8px;border-radius:999px;font-size:11px;background:#ecfdf5;color:#047857}
+    .status.suspended{background:#fef2f2;color:#b91c1c}
+    .badge-toggle{border:0;border-radius:999px;padding:5px 10px;font-size:11px;font-weight:700;cursor:pointer}
+    .badge-toggle.on{background:#ecfdf5;color:#047857}
+    .badge-toggle.off{background:#f3f4f6;color:#6b7280}
+    .badge-toggle:hover{opacity:.8}
+    .suspend-toggle-button{border:0;border-radius:7px;padding:7px 10px;font-size:12px;cursor:pointer}
+    .suspend-toggle-button.suspend{background:#fef2f2;color:#b91c1c}
+    .suspend-toggle-button.unsuspend{background:#ecfdf5;color:#047857}
+    .feature-toggle-button{border:0;border-radius:7px;padding:7px 10px;font-size:12px;cursor:pointer;background:#fffbeb;color:#b45309}
+    .feature-toggle-button:hover{background:#fef3c7}
+    .edit-listing-button-admin{background:#eef2ff;color:#3730a3;border:0;border-radius:7px;padding:7px 10px;font-size:12px;cursor:pointer}
+    .edit-listing-button-admin:hover{background:#e0e7ff}
+    .export-csv-button{border:1px solid #d1d5db;background:white;color:#374151;border-radius:8px;padding:9px 14px;font-size:13px;font-weight:600;cursor:pointer}
+    .export-csv-button:hover{background:#f3f4f6}
+    .bulk-toolbar{display:none;align-items:center;gap:10px;padding:12px 20px;background:#eef2ff;border-bottom:1px solid #e5e7eb;font-size:13px;color:#3730a3;flex-wrap:wrap}
+    .bulk-toolbar.visible{display:flex}
+    .bulk-toolbar button{border:0;border-radius:7px;padding:8px 12px;font-size:12px;font-weight:700;cursor:pointer}
+    .bulk-feature-button{background:#fffbeb;color:#b45309}
+    .bulk-unfeature-button{background:#f3f4f6;color:#374151}
+    .bulk-delete-button{background:#fef2f2;color:#b91c1c}
+    .featured-tag{display:inline-block;margin-left:6px;background:#fffbeb;color:#b45309;border-radius:999px;padding:2px 7px;font-size:10px;font-weight:800}
+    .category-manager-form{display:flex;gap:10px;padding:15px 20px;border-bottom:1px solid #e5e7eb;background:#fafafa;flex-wrap:wrap}
+    .category-manager-form input{padding:9px 11px;border:1px solid #d1d5db;border-radius:8px;font-size:13px}
+    .category-manager-form input#new-category-icon{width:70px;text-align:center}
+    .category-manager-form input#new-category-name{flex:1;min-width:180px}
+    .category-manager-form button{border:0;border-radius:8px;padding:9px 16px;background:#111827;color:white;font-size:13px;font-weight:700;cursor:pointer}
+    .category-chip-list{display:flex;flex-wrap:wrap;gap:10px;padding:18px 20px}
+    .category-chip{display:flex;align-items:center;gap:8px;border:1px solid #e5e7eb;border-radius:999px;padding:7px 8px 7px 14px;font-size:13px}
+    .category-chip button{border:0;background:#fef2f2;color:#b91c1c;border-radius:50%;width:22px;height:22px;font-size:13px;cursor:pointer;line-height:1}
+    .banner-form{padding:20px;display:grid;gap:14px;max-width:640px}
+    .banner-form label{display:flex;align-items:center;gap:8px;font-size:13px;font-weight:600;color:#374151}
+    .banner-form textarea{width:100%;border:1px solid #d1d5db;border-radius:8px;padding:11px 13px;font-size:14px;font-family:inherit;resize:vertical}
+    .banner-form button{justify-self:start;border:0;border-radius:8px;padding:10px 18px;background:#111827;color:white;font-size:13px;font-weight:700;cursor:pointer}
+    .banner-save-status{font-size:12px;color:#059669}
+    .edit-modal{position:fixed;inset:0;background:rgba(17,24,39,.55);z-index:100;align-items:center;justify-content:center;padding:16px}
+    .edit-modal.open{display:flex!important}
+    .edit-modal-content{background:white;border-radius:14px;padding:24px;width:100%;max-width:520px;max-height:90vh;overflow-y:auto}
+    .edit-modal-content h3{margin-bottom:16px;font-size:18px}
+    .edit-modal-content form{display:grid;gap:12px}
+    .edit-modal-content label{display:grid;gap:5px;font-size:12px;font-weight:600;color:#374151}
+    .edit-modal-content input,.edit-modal-content textarea{padding:10px 12px;border:1px solid #d1d5db;border-radius:8px;font-size:14px;font-family:inherit}
+    .edit-modal-actions{display:flex;justify-content:flex-end;gap:10px;margin-top:6px}
+    .edit-save-button{border:0;border-radius:8px;padding:9px 18px;background:#111827;color:white;font-size:13px;font-weight:700;cursor:pointer}
     .empty-state{padding:35px 20px;text-align:center;color:#9ca3af;font-size:14px}
     .loading{padding:35px 20px;text-align:center;color:#6b7280;font-size:14px}
     .admin-footer{text-align:center;color:#9ca3af;font-size:12px;padding-top:10px}
@@ -101,12 +144,18 @@
           <div id="total-users" class="stat-value">—</div>
           <div class="stat-note">Everyone who has signed up or logged in.</div>
         </div>
+        <div class="stat-card">
+          <div class="stat-label">Reviews</div>
+          <div id="total-reviews" class="stat-value">—</div>
+          <div class="stat-note">Buyer ratings and reviews submitted on PZ.</div>
+        </div>
       </div>
 
       <section class="section">
         <div class="section-header">
           <h3>Listings Management</h3>
-          <span>Search, view and remove marketplace listings</span>
+          <span>Search, view, edit, feature and remove marketplace listings</span>
+          <button type="button" class="export-csv-button" id="export-listings-csv">⬇ Export CSV</button>
         </div>
 
         <div class="table-toolbar">
@@ -119,12 +168,20 @@
           >
         </div>
 
+        <div class="bulk-toolbar" id="listings-bulk-toolbar">
+          <span id="listings-selected-count">0 selected</span>
+          <button type="button" class="bulk-feature-button" id="bulk-feature-button">⭐ Feature</button>
+          <button type="button" class="bulk-unfeature-button" id="bulk-unfeature-button">Unfeature</button>
+          <button type="button" class="bulk-delete-button" id="bulk-delete-button">Delete selected</button>
+        </div>
+
         <div id="listings-loading" class="loading">Loading listings...</div>
 
         <div class="table-wrapper">
           <table id="listings-table" style="display:none;">
             <thead>
               <tr>
+                <th><input type="checkbox" id="listings-select-all" aria-label="Select all listings"></th>
                 <th>Listing</th>
                 <th>Price</th>
                 <th>Category</th>
@@ -147,6 +204,7 @@
         <div class="section-header">
           <h3>Registered Users</h3>
           <span>Everyone who has signed up or signed in</span>
+          <button type="button" class="export-csv-button" id="export-users-csv">⬇ Export CSV</button>
         </div>
 
         <div class="table-toolbar">
@@ -168,9 +226,11 @@
                 <th>User</th>
                 <th>Email</th>
                 <th>Signed in with</th>
-                <th>Verified</th>
+                <th>Email verified</th>
                 <th>Joined</th>
                 <th>Last active</th>
+                <th>Verified seller</th>
+                <th>Account status</th>
               </tr>
             </thead>
             <tbody id="users-table-body"></tbody>
@@ -186,6 +246,7 @@
         <div class="section-header">
           <h3>Reports / Moderation</h3>
           <span>Review reported listings</span>
+          <button type="button" class="export-csv-button" id="export-reports-csv">⬇ Export CSV</button>
         </div>
         <div id="reports-loading" class="loading">Loading reports...</div>
         <div class="table-wrapper">
@@ -234,9 +295,101 @@
         </div>
       </section>
 
+      <section class="section">
+        <div class="section-header">
+          <h3>Reviews Moderation</h3>
+          <span>Buyer ratings and reviews submitted on PZ</span>
+        </div>
+        <div id="reviews-loading" class="loading">Loading reviews...</div>
+        <div class="table-wrapper">
+          <table id="reviews-table" style="display:none;">
+            <thead>
+              <tr>
+                <th>Seller</th>
+                <th>Rating</th>
+                <th>Buyer</th>
+                <th>Review</th>
+                <th>Date</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="reviews-table-body"></tbody>
+          </table>
+        </div>
+        <div id="reviews-empty" class="empty-state" style="display:none;">No reviews submitted yet.</div>
+      </section>
+
+      <section class="section">
+        <div class="section-header">
+          <h3>Category Manager</h3>
+          <span>Add extra categories shown on the homepage and listing form</span>
+        </div>
+        <form class="category-manager-form" id="category-form">
+          <input id="new-category-icon" type="text" maxlength="4" placeholder="🏷️" aria-label="Category icon (emoji)">
+          <input id="new-category-name" type="text" maxlength="30" placeholder="New category name" aria-label="Category name" required>
+          <button type="submit">Add category</button>
+        </form>
+        <div id="category-list" class="category-chip-list"></div>
+        <div id="category-empty" class="empty-state" style="display:none;">No custom categories yet. Built-in categories are always shown.</div>
+      </section>
+
+      <section class="section">
+        <div class="section-header">
+          <h3>Site Banner</h3>
+          <span>Show an announcement at the top of the homepage</span>
+        </div>
+        <form class="banner-form" id="banner-form">
+          <label><input type="checkbox" id="banner-enabled"> Show banner on homepage</label>
+          <textarea id="banner-message" rows="3" maxlength="300" placeholder="e.g. Scheduled maintenance tonight at 10pm."></textarea>
+          <button type="submit">Save banner</button>
+          <span class="banner-save-status" id="banner-save-status"></span>
+        </form>
+      </section>
+
+      <section class="section">
+        <div class="section-header">
+          <h3>Admin Activity Log</h3>
+          <span>Latest 50 admin actions</span>
+        </div>
+        <div id="activity-loading" class="loading">Loading activity...</div>
+        <div class="table-wrapper">
+          <table id="activity-table" style="display:none;">
+            <thead>
+              <tr>
+                <th>When</th>
+                <th>Admin</th>
+                <th>Action</th>
+                <th>Target</th>
+              </tr>
+            </thead>
+            <tbody id="activity-table-body"></tbody>
+          </table>
+        </div>
+        <div id="activity-empty" class="empty-state" style="display:none;">No admin activity recorded yet.</div>
+      </section>
+
       <div class="admin-footer">PZ Online Admin Dashboard</div>
     </div>
   </main>
+
+  <div class="edit-modal" id="edit-listing-modal" style="display:none;">
+    <div class="edit-modal-content">
+      <h3>Edit listing</h3>
+      <form id="edit-listing-form">
+        <label>Title<input id="edit-title" type="text" required maxlength="120"></label>
+        <label>Price<input id="edit-price" type="number" min="0" step="any"></label>
+        <label>Category<input id="edit-category" type="text" maxlength="40"></label>
+        <label>Location<input id="edit-location" type="text" maxlength="80"></label>
+        <label>Seller name<input id="edit-seller-name" type="text" maxlength="80"></label>
+        <label>Seller phone<input id="edit-seller-phone" type="text" maxlength="30"></label>
+        <label>Description<textarea id="edit-description" rows="4" maxlength="2000"></textarea></label>
+        <div class="edit-modal-actions">
+          <button type="button" id="edit-cancel" class="export-csv-button">Cancel</button>
+          <button type="submit" class="edit-save-button">Save changes</button>
+        </div>
+      </form>
+    </div>
+  </div>
 
   <script type="module" src="admin.js"></script>
 </body>

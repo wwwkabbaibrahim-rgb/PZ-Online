@@ -13,18 +13,16 @@
     <header class="site-header">
       <div class="container nav">
         <a class="logo" href="index.html">PZ<span>Online</span></a>
-
         <nav class="nav-links" aria-label="Main navigation">
-          <a href="index.html#listings">Browse listings</a>
-          <a href="index.html#my-listings">My listings</a>
-          <a href="messages.html">Messages</a>
-          <a href="index.html#how-it-works">How it works</a>
+          <a href="browse.html">Browse listings</a>
+          <div class="top-nav-dropdown"><button type="button" class="top-nav-dropdown-toggle">All Categories <span>▾</span></button><div class="top-nav-dropdown-menu"><a href="browse.html">All categories</a><a href="browse.html?category=Mobiles">Mobiles</a><a href="browse.html?category=Okada%20%26%20Motorbikes">Okada &amp; Motorbikes</a><a href="browse.html?category=Cars%20%26%20Vehicles">Cars &amp; Vehicles</a><a href="browse.html?category=Electronics">Electronics</a><a href="browse.html?category=Phones%20%26%20Accessories">Phones &amp; Accessories</a><a href="browse.html?category=Home%20%26%20Furniture">Home &amp; Furniture</a><a href="browse.html?category=Land%20%26%20Property">Land &amp; Property</a><a href="browse.html?category=Fashion">Fashion</a><a href="browse.html?category=Agriculture">Agriculture</a><a href="browse.html?category=Food%20%26%20Drinks">Food &amp; Drinks</a><a href="browse.html?category=Building%20Materials">Building Materials</a><a href="browse.html?category=Generators%20%26%20Solar">Generators &amp; Solar</a><a href="browse.html?category=Spare%20Parts">Spare Parts</a><a href="browse.html?category=Jobs">Jobs</a><a href="browse.html?category=Beauty">Beauty</a><a href="browse.html?category=Education">Education</a><a href="browse.html?category=Services">Services</a><a href="browse.html?category=Pets%20%26%20Animals">Pets &amp; Animals</a></div></div>
+          <a href="messages.html">Messages</a><a href="index.html#how-it-works">How it works</a>
         </nav>
-
         <div class="nav-actions">
           <button class="notification-bell" id="notification-bell" type="button" aria-label="Notifications" title="Notifications">🔔<span class="notification-count hidden" id="notification-count">0</span></button>
-          <span id="user-status">Browsing as guest</span>
-          <button class="auth-button" id="auth-button">Log in</button>
+          <span id="user-status">Browsing as guest</span><button class="auth-button" id="auth-button">Log in</button>
+          <div class="account-menu hidden" id="account-menu"><button type="button" class="account-menu-toggle" id="account-menu-toggle" aria-label="Account menu"><span class="account-avatar"><span id="account-avatar-placeholder">👤</span><img id="account-avatar-image" class="hidden" alt=""/></span><span>▾</span></button><div class="account-menu-dropdown hidden" id="account-menu-dropdown"><p class="account-menu-email" id="account-menu-email"></p><a href="profile.html">👤 My Profile</a><a href="my-listings.html">▣ My Listings</a><a href="favourites.html">♥ My Favourites</a><a href="browse.html?view=recent">◷ My Browsing</a><a href="messages.html">💬 Messages</a><button id="account-menu-logout" type="button">↪ Log out</button></div></div>
+          <a class="post-ad-button" href="index.html?post=1">+ Post an Ad</a>
         </div>
       </div>
     </header>
@@ -157,6 +155,8 @@
       </div>
     </div>
 
+    <script type="module" src="site-nav.js"></script>
+    <script type="module" src="notifications.js"></script>
     <script type="module" src="messages.js"></script>
-  </body>
+</body>
 </html>

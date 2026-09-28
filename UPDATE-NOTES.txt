@@ -1,0 +1,11 @@
+PZ Online UI Polish Fix
+
+Replace ONLY style.css in the current PZ Online project.
+
+Fixes:
+- New Listing modal now uses the same polished Seller Workspace visual language as Edit Listing.
+- Account dropdown redesigned with a structured account header and modern action rows.
+- Mobile homepage search is now a clean full-width stacked layout.
+- Search button is no longer clipped on 400px/mobile widths.
+- Save Search remains available underneath Search on mobile.
+- No JavaScript, Firebase, admin, chat, reviews, favourites, reports, notifications, or listing logic changed.

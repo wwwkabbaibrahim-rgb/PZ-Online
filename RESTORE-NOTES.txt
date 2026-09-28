@@ -1,0 +1,28 @@
+PZ ONLINE — SAFE DESIGN UPDATE
+
+This package is intentionally surgical.
+
+CHANGED:
+1. index.html — only the homepage hero was changed to match the approved PZ Online design: coastal Freetown background, no Sierra Leone flag, modern search bar and category shortcuts. Existing sections/features remain.
+2. style.css — only homepage-hero styling was appended. Existing marketplace/listing/admin styling was not replaced.
+3. app.js — listing loading no longer uses Firestore orderBy(createdAt), so older listings that do not contain createdAt are not silently excluded. Listings are sorted in the browser with newest first; old/missing dates remain visible.
+4. browse.js — same listing-compatibility fix for the Browse page.
+5. pz-hero-background-no-flag.jpg — local hero background asset.
+
+INTENTIONALLY UNCHANGED:
+- admin.html
+- admin.js
+- firestore.rules
+- product.js / product.html
+- messages.js / messages.html
+- notifications.js
+- profile.js / profile.html
+- seller.js / seller.html
+- business.html
+- favourites.js / favourites.html
+- my-listings.js / my-listings.html
+- privacy.html / terms.html
+- site-nav.js / vercel.json
+
+IMPORTANT:
+This package does not delete or rewrite Firestore listings. If a listing still exists in Firestore, the updated listing query will load it even if createdAt is missing. If a listing was actually deleted from Firestore, a website package cannot recreate that data.

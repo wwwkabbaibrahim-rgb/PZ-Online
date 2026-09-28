@@ -21,6 +21,9 @@ import {
   addDoc,
   collection,
   updateDoc,
+  increment,
+  query,
+  where,
   serverTimestamp,
 } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
 
@@ -67,6 +70,7 @@ const productTitle = document.getElementById("product-title");
 const productPrice = document.getElementById("product-price");
 const productLocation = document.getElementById("product-location");
 const productDate = document.getElementById("product-date");
+const productViews = document.getElementById("product-views");
 const productDescription = document.getElementById("product-description");
 const productSellerName = document.getElementById("product-seller-name");
 const productSellerPhone = document.getElementById("product-seller-phone");
@@ -433,6 +437,13 @@ productFavoriteButton.addEventListener("click", async () => {
 
 function renderListing(listing) {
   currentListing = listing;
+  try {
+    const recent = JSON.parse(localStorage.getItem("pz-recently-viewed") || "[]").filter((id) => id !== listing.id);
+    recent.unshift(listing.id);
+    localStorage.setItem("pz-recently-viewed", JSON.stringify(recent.slice(0, 30)));
+  } catch (error) {
+    console.warn("Could not save recent listing", error);
+  }
 
   const galleryImages = Array.isArray(listing.images) && listing.images.length ? listing.images : (listing.image ? [listing.image] : ["https://images.unsplash.com/photo-1512428559087-560fa5ceab42?auto=format&fit=crop&w=800&q=80"]);
   productImage.src = galleryImages[0];
@@ -456,6 +467,30 @@ function renderListing(listing) {
   productDate.textContent = formatListingDate(listing.createdAt);
   productDescription.textContent = listing.description;
   productSellerName.textContent = listing.sellerName;
+
+  // Verified seller badge (public flag managed by admins)
+  productSellerName.querySelector(".verified-seller-badge")?.remove();
+  if (listing.ownerId) {
+    getDoc(doc(db, "verifiedSellers", listing.ownerId))
+      .then((verifiedSnap) => {
+        if (!verifiedSnap.exists()) return;
+        const badge = document.createElement("span");
+        badge.className = "verified-seller-badge";
+        badge.textContent = "✓ Verified seller";
+        productSellerName.appendChild(badge);
+      })
+      .catch((error) => console.error("Verified badge check failed:", error));
+  }
+
+  if (listing.featured) {
+    const categoryEl = document.getElementById("product-category");
+    if (categoryEl && !categoryEl.querySelector(".featured-inline")) {
+      const tag = document.createElement("span");
+      tag.className = "featured-inline";
+      tag.textContent = " ⭐ Featured";
+      categoryEl.appendChild(tag);
+    }
+  }
   productSellerPhone.textContent = listing.sellerPhone;
 
   const digitsOnly = (listing.sellerPhone || "").replace(/\D/g, "");
@@ -471,12 +506,27 @@ function renderListing(listing) {
     !currentUser || currentUser.uid !== listing.ownerId
   );
 
+  // Show the listing immediately. View counting is analytics only and must never
+  // hold the product page behind a Firestore write.
   loadingMessage.classList.add("hidden");
   notFoundMessage.classList.add("hidden");
   productDetail.classList.remove("hidden");
 
   refreshFavoriteState();
   loadSellerRatings(listing.ownerId);
+
+  if (currentUser && currentUser.uid !== listing.ownerId) {
+    const viewKey = `pz-viewed-${listing.id}`;
+    if (!sessionStorage.getItem(viewKey)) {
+      sessionStorage.setItem(viewKey, "1");
+      updateDoc(doc(db, "listings", listing.id), { views: increment(1) })
+        .then(() => {
+          listing.views = Number(listing.views || 0) + 1;
+          if (productViews) productViews.textContent = `👁 ${listing.views.toLocaleString()} views`;
+        })
+        .catch((error) => console.warn("Could not record listing view", error));
+    }
+  }
 }
 
 async function loadSellerRatings(revieweeId) {
@@ -542,7 +592,7 @@ ratingForm?.addEventListener("submit",async(e)=>{
     const conversationId=`${currentListing.id}_${currentUser.uid}`;
     const conversationSnapshot=await getDoc(doc(db,"conversations",conversationId));
     if(!conversationSnapshot.exists()){alert("Start an in-app chat with this seller before leaving a rating.");return;}
-    const existing=await getDocs(query(collection(db,"reviews"),where("conversationId","==",conversationId)));
+    const existing=await getDocs(query(collection(db,"reviews"),where("conversationId","==",conversationId),where("listingId","==",currentListing.id)));
     if(existing.docs.some(d=>d.data().reviewerId===currentUser.uid)){alert("You have already rated this seller for this listing.");return;}
     await addDoc(collection(db,"reviews"),{listingId:currentListing.id,conversationId,reviewerId:currentUser.uid,reviewerName:currentUser.email||"Buyer",revieweeId:currentListing.ownerId,revieweeName:currentListing.sellerName||"Seller",rating,comment,createdAt:serverTimestamp()});
     ratingModal.classList.add("hidden"); ratingForm.reset(); await loadSellerRatings(currentListing.ownerId); alert("Thanks — your rating was submitted.");

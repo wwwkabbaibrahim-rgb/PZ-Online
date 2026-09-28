@@ -15,135 +15,115 @@
   <body>
     <header class="site-header">
       <div class="container nav">
-        <a class="logo" href="#">PZ<span>Online</span></a>
+        <a class="logo" href="index.html">PZ<span>Online</span></a>
 
         <nav class="nav-links" aria-label="Main navigation">
-         <a href="#listings">Browse listings</a>
-<a href="#my-listings">My listings</a>
-<a href="messages.html">Messages</a>
-<a href="#how-it-works">How it works</a>
+          <a href="browse.html">Browse listings</a>
+          <div class="top-nav-dropdown">
+            <button type="button" class="top-nav-dropdown-toggle">All Categories <span>▾</span></button>
+            <div class="top-nav-dropdown-menu"><a href="browse.html">All categories</a><a href="browse.html?category=Mobiles">Mobiles</a><a href="browse.html?category=Okada%20%26%20Motorbikes">Okada &amp; Motorbikes</a><a href="browse.html?category=Cars%20%26%20Vehicles">Cars &amp; Vehicles</a><a href="browse.html?category=Electronics">Electronics</a><a href="browse.html?category=Phones%20%26%20Accessories">Phones &amp; Accessories</a><a href="browse.html?category=Home%20%26%20Furniture">Home &amp; Furniture</a><a href="browse.html?category=Land%20%26%20Property">Land &amp; Property</a><a href="browse.html?category=Fashion">Fashion</a><a href="browse.html?category=Agriculture">Agriculture</a><a href="browse.html?category=Food%20%26%20Drinks">Food &amp; Drinks</a><a href="browse.html?category=Building%20Materials">Building Materials</a><a href="browse.html?category=Generators%20%26%20Solar">Generators &amp; Solar</a><a href="browse.html?category=Spare%20Parts">Spare Parts</a><a href="browse.html?category=Jobs">Jobs</a><a href="browse.html?category=Beauty">Beauty</a><a href="browse.html?category=Education">Education</a><a href="browse.html?category=Services">Services</a><a href="browse.html?category=Pets%20%26%20Animals">Pets &amp; Animals</a><a href="browse.html?category=Baby%20%26%20Kids">Baby &amp; Kids</a><a href="browse.html?category=Health%20%26%20Personal%20Care">Health &amp; Personal Care</a><a href="browse.html?category=Office%20%26%20Business">Office &amp; Business</a><a href="browse.html?category=Sports%20%26%20Hobbies">Sports &amp; Hobbies</a></div>
+          </div>
+          <a href="messages.html">Messages</a>
+          <a href="#how-it-works">How it works</a>
         </nav>
 
         <div class="nav-actions">
-  <button class="notification-bell" id="notification-bell" type="button" aria-label="Notifications" title="Notifications">🔔<span class="notification-count hidden" id="notification-count">0</span></button>
-  <span id="user-status">Browsing as guest</span>
-
-  <button class="auth-button" id="auth-button">Log in</button>
-
-  <div class="account-menu hidden" id="account-menu">
-    <button type="button" class="account-menu-toggle" id="account-menu-toggle" aria-haspopup="true" aria-expanded="false" aria-label="Account menu">
-      <span class="account-avatar">
-        <span id="account-avatar-placeholder">👤</span>
-        <img id="account-avatar-image" class="hidden" alt="" />
-      </span>
-      <span class="account-menu-caret">▾</span>
-    </button>
-
-    <div class="account-menu-dropdown hidden" id="account-menu-dropdown">
-      <p class="account-menu-email" id="account-menu-email"></p>
-      <button type="button" id="profile-button">👤 My Profile</button>
-      <button type="button" id="account-menu-logout">↪ Log out</button>
-    </div>
-  </div>
-
-  <button class="post-ad-button" id="open-listing-form">
-    + Post an Ad
-  </button>
-</div>
+          <button class="notification-bell" id="notification-bell" type="button" aria-label="Notifications" title="Notifications">🔔<span class="notification-count hidden" id="notification-count">0</span></button>
+          <span id="user-status">Browsing as guest</span>
+          <button class="auth-button" id="auth-button">Log in</button>
+          <div class="account-menu hidden" id="account-menu">
+            <button type="button" class="account-menu-toggle" id="account-menu-toggle" aria-haspopup="true" aria-expanded="false" aria-label="Account menu">
+              <span class="account-avatar"><span id="account-avatar-placeholder">👤</span><img id="account-avatar-image" class="hidden" alt="" /></span>
+              <span class="account-menu-caret">▾</span>
+            </button>
+            <div class="account-menu-dropdown hidden" id="account-menu-dropdown">
+              <p class="account-menu-email" id="account-menu-email"></p>
+              <a href="profile.html" id="profile-button">👤 My Profile</a>
+              <a href="my-listings.html">▣ My Listings</a>
+              <a href="favourites.html">♥ My Favourites</a>
+              <a href="browse.html?view=recent">◷ My Browsing</a>
+              <a href="messages.html">💬 Messages</a>
+              <a href="index.html#how-it-works">ℹ How it works</a>
+              <button type="button" id="account-menu-logout">↪ Log out</button>
+            </div>
+          </div>
+          <a class="post-ad-button" id="open-listing-form" href="#">+ Post an Ad</a>
+        </div>
       </div>
     </header>
 
     <main>
-      <section class="hero">
-        <div class="container">
-          <p class="eyebrow">🇸🇱 Sierra Leone's local marketplace</p>
-          <h1>Buy, sell and do business — the PZ way, online.</h1>
-          <p class="hero-text">
-            Discover products, vehicles, services and everyday essentials from people and businesses across Sierra Leone.
-          </p>
+      <section class="hero hero-marketplace">
+        <div class="hero-backdrop" aria-hidden="true"></div>
+        <div class="container hero-inner">
+          <div class="hero-copy">
+            <p class="eyebrow hero-eyebrow">📍 Sierra Leone's Trusted Marketplace</p>
+            <h1>Buy, sell and do business —<br><span>the PZ way, online.</span></h1>
+            <p class="hero-text">Discover products, vehicles, services and everyday essentials from people and businesses across Sierra Leone.</p>
+          </div>
 
           <form class="search-bar" id="search-form">
-            <input
-              id="search-input"
-              type="search"
-              placeholder="Search products or services..."
-              aria-label="Search products or services"
-            />
-
+            <span class="search-icon" aria-hidden="true">⌕</span>
+            <input id="search-input" type="search" placeholder="Search for anything... (e.g. phones, cars, jobs, services)" aria-label="Search products or services" />
             <select id="location-filter" aria-label="Filter by location">
               <option value="">All locations</option>
-<option value="Freetown">Freetown</option>
-<option value="Bo">Bo</option>
-<option value="Kenema">Kenema</option>
-<option value="Makeni">Makeni</option>
-<option value="Koidu">Koidu</option>
-<option value="Waterloo">Waterloo</option>
-<option value="Port Loko">Port Loko</option>
+<option value="Freetown">Freetown</option><option value="Aberdeen">Aberdeen</option><option value="Lumley">Lumley</option><option value="Wilberforce">Wilberforce</option><option value="Juba">Juba</option><option value="Hill Station">Hill Station</option><option value="Brookfields">Brookfields</option><option value="Congo Town">Congo Town</option><option value="Murray Town">Murray Town</option><option value="Tengbeh Town">Tengbeh Town</option><option value="Central Freetown">Central Freetown</option><option value="Kroo Bay">Kroo Bay</option><option value="Kissy">Kissy</option><option value="Wellington">Wellington</option><option value="Calaba Town">Calaba Town</option><option value="Allen Town">Allen Town</option><option value="Cline Town">Cline Town</option><option value="Portee">Portee</option><option value="Fourah Bay">Fourah Bay</option><option value="Up Gun">Up Gun</option><option value="Magazine">Magazine</option><option value="Tower Hill">Tower Hill</option><option value="New England">New England</option><option value="Bo">Bo</option><option value="Kenema">Kenema</option><option value="Makeni">Makeni</option><option value="Koidu">Koidu</option><option value="Waterloo">Waterloo</option><option value="Port Loko">Port Loko</option>
             </select>
-
             <button type="submit">Search</button>
           </form>
 
-          <div class="trust-bump" aria-label="Why buyers trust PZ Online">
-            <span class="trust-bump-item"><span class="icon">✓</span> Secure in-app chat</span>
-            <span class="trust-bump-item"><span class="icon">📞</span> Call or WhatsApp sellers directly</span>
-            <span class="trust-bump-item"><span class="icon">🛡</span> Buyer safety tips on every listing</span>
+          <div class="hero-category-rail" aria-label="Popular categories">
+            <a href="browse.html?category=Mobiles"><span>📱</span><b>Mobiles</b></a>
+            <a href="browse.html?category=Okada%20%26%20Motorbikes"><span>🏍️</span><b>Okada</b></a>
+            <a href="browse.html?category=Cars%20%26%20Vehicles"><span>🚙</span><b>Cars &amp; Vehicles</b></a>
+            <a href="browse.html?category=Electronics"><span>💻</span><b>Electronics</b></a>
+            <a href="browse.html?category=Fashion"><span>👕</span><b>Fashion</b></a>
+            <a href="browse.html?category=Home%20%26%20Furniture"><span>🏠</span><b>Home &amp; Furniture</b></a>
+            <a href="browse.html"><span>›</span><b>View All</b></a>
           </div>
         </div>
       </section>
+
+      <section class="hero-trust-strip" aria-label="Why use PZ Online">
+        <div class="container hero-trust-grid">
+          <div><span>🛡️</span><div><strong>Safe &amp; Secure</strong><small>Verified users and secure messaging</small></div></div>
+          <div><span>★</span><div><strong>Trusted Community</strong><small>Buy, sell and review with confidence</small></div></div>
+          <div><span>▣</span><div><strong>Wide Selection</strong><small>Thousands of listings across Sierra Leone</small></div></div>
+          <div><span>◉</span><div><strong>Local Support</strong><small>Here for you, locally</small></div></div>
+        </div>
+      </section>
+
+      <section class="browse-categories container" id="browse-categories" aria-label="Browse categories">
+        <div class="section-heading category-heading">
+          <div><p class="eyebrow">Explore PZ</p><h2>Browse categories</h2></div>
+          <a class="section-link" href="browse.html">View all categories →</a>
+        </div>
+        <div class="category-grid marketplace-category-grid" id="category-grid">
+          <a class="category-tile category-photo-tile" href="browse.html?category=Mobiles"><span class="category-tile-photo"><img src="category-images/mobiles.jpg" alt="Mobiles" loading="lazy"></span><span class="category-tile-label">Mobiles <small>Shop now →</small></span></a>
+          <a class="category-tile category-photo-tile" href="browse.html?category=Okada%20%26%20Motorbikes"><span class="category-tile-photo"><img src="category-images/okada-motorbikes.jpg" alt="Okada & Motorbikes" loading="lazy"></span><span class="category-tile-label">Okada &amp; Motorbikes <small>Shop now →</small></span></a>
+          <a class="category-tile category-photo-tile" href="browse.html?category=Cars%20%26%20Vehicles"><span class="category-tile-photo"><img src="category-images/cars-vehicles.jpg" alt="Cars & Vehicles" loading="lazy"></span><span class="category-tile-label">Cars &amp; Vehicles <small>Shop now →</small></span></a>
+          <a class="category-tile category-photo-tile" href="browse.html?category=Electronics"><span class="category-tile-photo"><img src="category-images/electronics.jpg" alt="Electronics" loading="lazy"></span><span class="category-tile-label">Electronics <small>Shop now →</small></span></a>
+          <a class="category-tile category-photo-tile" href="browse.html?category=Home%20%26%20Furniture"><span class="category-tile-photo"><img src="category-images/home-furniture.jpg" alt="Home & Furniture" loading="lazy"></span><span class="category-tile-label">Home &amp; Furniture <small>Shop now →</small></span></a>
+          <a class="category-tile category-photo-tile" href="browse.html?category=Fashion"><span class="category-tile-photo"><img src="category-images/fashion.jpg" alt="Fashion" loading="lazy"></span><span class="category-tile-label">Fashion <small>Shop now →</small></span></a>
+          <a class="category-tile category-photo-tile" href="browse.html?category=Agriculture"><span class="category-tile-photo"><img src="category-images/agriculture.jpg" alt="Agriculture" loading="lazy"></span><span class="category-tile-label">Agriculture <small>Shop now →</small></span></a>
+          <a class="category-tile category-photo-tile" href="browse.html?category=Jobs"><span class="category-tile-photo"><img src="category-images/jobs.jpg" alt="Jobs" loading="lazy"></span><span class="category-tile-label">Jobs <small>Explore jobs →</small></span></a>
+          <a class="category-tile category-photo-tile" href="browse.html?category=Services"><span class="category-tile-photo"><img src="category-images/services.jpg" alt="Services" loading="lazy"></span><span class="category-tile-label">Services <small>Find services →</small></span></a>
+          <a class="category-tile category-photo-tile" href="browse.html?category=Land%20%26%20Property"><span class="category-tile-photo"><img src="category-images/land-property.jpg" alt="Land & Property" loading="lazy"></span><span class="category-tile-label">Land &amp; Property <small>Explore →</small></span></a>
+          <a class="category-tile category-photo-tile" href="browse.html?category=Food%20%26%20Drinks"><span class="category-tile-photo"><img src="category-images/food-drinks.jpg" alt="Food & Drinks" loading="lazy"></span><span class="category-tile-label">Food &amp; Drinks <small>Explore →</small></span></a>
+          <a class="category-tile category-photo-tile" href="browse.html?category=Beauty"><span class="category-tile-photo"><img src="category-images/beauty.jpg" alt="Beauty" loading="lazy"></span><span class="category-tile-label">Beauty <small>Explore →</small></span></a>
+          <a class="category-tile category-photo-tile" href="browse.html?category=Education"><span class="category-tile-photo"><img src="category-images/education.jpg" alt="Education" loading="lazy"></span><span class="category-tile-label">Education <small>Explore →</small></span></a>
+          <a class="category-tile category-photo-tile" href="browse.html?category=Pets%20%26%20Animals"><span class="category-tile-photo"><img src="category-images/pets.jpg" alt="Pets & Animals" loading="lazy"></span><span class="category-tile-label">Pets &amp; Animals <small>Explore →</small></span></a>
+          <a class="category-tile category-photo-tile category-simple-tile" href="browse.html?category=Baby%20%26%20Kids"><span class="category-simple-icon">🧸</span><span class="category-tile-label">Baby &amp; Kids <small>Explore →</small></span></a>
+          <a class="category-tile category-photo-tile category-simple-tile" href="browse.html?category=Health%20%26%20Personal%20Care"><span class="category-simple-icon">🩺</span><span class="category-tile-label">Health &amp; Personal Care <small>Explore →</small></span></a>
+          <a class="category-tile category-photo-tile category-simple-tile" href="browse.html?category=Office%20%26%20Business"><span class="category-simple-icon">💼</span><span class="category-tile-label">Office &amp; Business <small>Explore →</small></span></a>
+          <a class="category-tile category-photo-tile category-simple-tile" href="browse.html?category=Sports%20%26%20Hobbies"><span class="category-simple-icon">⚽</span><span class="category-tile-label">Sports &amp; Hobbies <small>Explore →</small></span></a>
+        </div>
+      </section>
+      <p class="site-banner hidden" id="site-banner" role="status"></p>
 
       <p class="verification-message hidden" id="verification-message">
   Your email address is not verified yet. Please check your inbox for the verification email.
 </p>
-      <section class="browse-categories container" aria-label="Browse categories">
-        <div class="section-heading">
-          <div>
-            <h2>Browse categories</h2>
-          </div>
-        </div>
-
-        <div class="category-grid">
-          <button class="category category-tile" data-category="Mobiles" type="button"><span class="category-tile-icon">📱</span><span>Mobiles</span></button>
-          <button class="category category-tile" data-category="Okada & Motorbikes" type="button"><span class="category-tile-icon">🏍️</span><span>Okada & Motorbikes</span></button>
-          <button class="category category-tile" data-category="Cars & Vehicles" type="button"><span class="category-tile-icon">🚗</span><span>Cars & Vehicles</span></button>
-          <button class="category category-tile" data-category="Electronics" type="button"><span class="category-tile-icon">💻</span><span>Electronics</span></button>
-          <button class="category category-tile" data-category="Phones & Accessories" type="button"><span class="category-tile-icon">📲</span><span>Phones & Accessories</span></button>
-          <button class="category category-tile" data-category="Home & Furniture" type="button"><span class="category-tile-icon">🛋️</span><span>Home & Furniture</span></button>
-          <button class="category category-tile" data-category="Land & Property" type="button"><span class="category-tile-icon">🏠</span><span>Land & Property</span></button>
-          <button class="category category-tile" data-category="Fashion" type="button"><span class="category-tile-icon">👗</span><span>Fashion</span></button>
-          <button class="category category-tile" data-category="Agriculture" type="button"><span class="category-tile-icon">🌾</span><span>Agriculture</span></button>
-          <button class="category category-tile" data-category="Food & Drinks" type="button"><span class="category-tile-icon">🍲</span><span>Food & Drinks</span></button>
-          <button class="category category-tile" data-category="Building Materials" type="button"><span class="category-tile-icon">🧱</span><span>Building Materials</span></button>
-          <button class="category category-tile" data-category="Generators & Solar" type="button"><span class="category-tile-icon">🔋</span><span>Generators & Solar</span></button>
-          <button class="category category-tile" data-category="Spare Parts" type="button"><span class="category-tile-icon">⚙️</span><span>Spare Parts</span></button>
-          <button class="category category-tile" data-category="Jobs" type="button"><span class="category-tile-icon">💼</span><span>Jobs</span></button>
-          <button class="category category-tile" data-category="Beauty" type="button"><span class="category-tile-icon">💄</span><span>Beauty</span></button>
-          <button class="category category-tile" data-category="Education" type="button"><span class="category-tile-icon">🎓</span><span>Education</span></button>
-          <button class="category category-tile" data-category="Services" type="button"><span class="category-tile-icon">🛠️</span><span>Services</span></button>
-        </div>
-      </section>
-
-      <section class="categories container" aria-label="Listing categories">
-        <button class="category active" data-category="All">🛍️ All</button>
-        <button class="category" data-category="Mobiles">📱 Mobiles</button>
-        <button class="category" data-category="Okada & Motorbikes">🏍️ Okada & Motorbikes</button>
-        <button class="category" data-category="Cars & Vehicles">🚗 Cars & Vehicles</button>
-        <button class="category" data-category="Electronics">💻 Electronics</button>
-        <button class="category" data-category="Phones & Accessories">📲 Phones & Accessories</button>
-        <button class="category" data-category="Home & Furniture">🛋️ Home & Furniture</button>
-        <button class="category" data-category="Land & Property">🏠 Land & Property</button>
-        <button class="category" data-category="Fashion">👗 Fashion</button>
-        <button class="category" data-category="Agriculture">🌾 Agriculture</button>
-        <button class="category" data-category="Food & Drinks">🍲 Food & Drinks</button>
-        <button class="category" data-category="Building Materials">🧱 Building Materials</button>
-        <button class="category" data-category="Generators & Solar">🔋 Generators & Solar</button>
-        <button class="category" data-category="Spare Parts">⚙️ Spare Parts</button>
-        <button class="category" data-category="Jobs">💼 Jobs</button>
-        <button class="category" data-category="Beauty">💄 Beauty</button>
-        <button class="category" data-category="Education">🎓 Education</button>
-        <button class="category" data-category="Services">🛠️ Services</button>
-      </section>
-
       <section class="trending-section container" id="trending-section" aria-label="Trending listings">
         <div class="section-heading">
           <div>
@@ -167,6 +147,7 @@
             <p class="eyebrow">Latest listings</p>
             <h2>Explore nearby offers</h2>
           </div>
+          <a class="section-link" href="browse.html">View all listings →</a>
 
           <div class="listing-heading-tools">
             <p id="listing-count" aria-live="polite"></p>
@@ -174,7 +155,7 @@
               <input id="min-price" type="number" min="0" placeholder="Min Le" aria-label="Minimum price" />
               <input id="max-price" type="number" min="0" placeholder="Max Le" aria-label="Maximum price" />
               <button id="price-filter" type="button">Apply</button>
-              <button id="clear-price-filter" class="text-button" type="button">Clear</button>
+              <button id="clear-price-filter" class="text-button" type="button">Clear</button><button id="save-search-button" class="save-search-button" type="button">♡ Save search</button>
             </div>
           </div>
         </div>
@@ -192,39 +173,13 @@
         </button>
         <div id="load-more-sentinel" aria-hidden="true"></div>
       </section>
-<section class="my-listings-section container hidden" id="my-listings">
-  <div class="section-heading">
-    <div>
-      <p class="eyebrow">Seller dashboard</p>
-      <h2>My listings</h2>
-    </div>
+      <section class="business-promo-section container" aria-label="PZ Business">
+        <div class="business-promo-card">
+          <div class="business-promo-copy"><p class="eyebrow">🏢 PZ Business</p><h2>Build your business on PZ</h2><p>We're preparing professional business profiles, storefronts, promoted listings, analytics and tools for shops and service providers.</p><div class="business-promo-tags"><span>Business storefront</span><span>Verified business</span><span>Promote &amp; advertise</span><span>Business insights</span></div></div>
+          <div class="business-promo-action"><span class="coming-soon-badge">Coming soon</span><strong>Under development</strong><p>Business accounts and paid promotion are not available yet.</p><a class="secondary-button" href="business.html">See what's planned →</a></div>
+        </div>
+      </section>
 
-    <button class="post-ad-button" id="dashboard-post-ad">
-      + Post an Ad
-    </button>
-
-    <div class="dashboard-section-heading">
-  <div>
-    <p class="eyebrow">Saved listings</p>
-    <h2>My Favourites ❤️</h2>
-  </div>
-</div>
-
-<div class="listing-grid" id="my-favourites-list">
-  <p class="empty-state" id="my-favourites-empty">
-    You haven't added any favourites yet.
-  </p>
-</div>
-  </div>
-
-  <p class="my-listings-message" id="my-listings-message">
-    Log in to view and manage the listings you posted.
-  </p>
-
-  <div class="listing-grid" id="my-listing-grid">
-    <!-- JavaScript adds the signed-in seller's listings here. -->
-  </div>
-</section>
       <section class="how-it-works" id="how-it-works">
         <div class="container">
           <p class="eyebrow">Simple and local</p>
@@ -307,7 +262,7 @@
                 <option value="Beauty">Beauty</option>
                 <option value="Education">Education</option>
                 <option value="Services">Services</option>
-
+                <option value="Pets & Animals">Pets & Animals</option>
               </select>
             </label>
           </div>
@@ -317,12 +272,17 @@
             <select id="location" required>
               <option value="">Choose your location</option>
 <option value="Freetown">Freetown</option>
-<option value="Bo">Bo</option>
-<option value="Kenema">Kenema</option>
-<option value="Makeni">Makeni</option>
-<option value="Koidu">Koidu</option>
-<option value="Waterloo">Waterloo</option>
-<option value="Port Loko">Port Loko</option>
+<option value="Aberdeen">Aberdeen</option><option value="Lumley">Lumley</option><option value="Wilberforce">Wilberforce</option><option value="Juba">Juba</option><option value="Hill Station">Hill Station</option><option value="Brookfields">Brookfields</option><option value="Congo Town">Congo Town</option><option value="Murray Town">Murray Town</option><option value="Tengbeh Town">Tengbeh Town</option><option value="Central Freetown">Central Freetown</option><option value="Kroo Bay">Kroo Bay</option><option value="Kissy">Kissy</option><option value="Wellington">Wellington</option><option value="Calaba Town">Calaba Town</option><option value="Allen Town">Allen Town</option><option value="Cline Town">Cline Town</option><option value="Portee">Portee</option><option value="Fourah Bay">Fourah Bay</option><option value="Up Gun">Up Gun</option><option value="Magazine">Magazine</option><option value="Tower Hill">Tower Hill</option><option value="New England">New England</option>
+<option value="Bo">Bo</option><option value="Kenema">Kenema</option><option value="Makeni">Makeni</option><option value="Koidu">Koidu</option><option value="Waterloo">Waterloo</option><option value="Port Loko">Port Loko</option>
+            </select>
+          </label>
+
+          <label>
+            Listing status
+            <select id="status">
+              <option value="available">Available</option>
+              <option value="reserved">Reserved</option>
+              <option value="sold">Sold</option>
             </select>
           </label>
 
@@ -366,63 +326,6 @@
         </form>
       </div>
     </div>
-    <!-- Profile Modal -->
-<div class="modal hidden" id="profile-modal" role="dialog" aria-modal="true">
-  <div class="modal-content profile-modal-content">
-    <button
-      class="close-button"
-      id="close-profile-modal"
-      aria-label="Close"
-      type="button"
-    >
-      ×
-    </button>
-
-    <h2>My Profile</h2>
-
-    <div class="profile-info">
-      <div class="profile-avatar" id="profile-avatar">
-        <span id="profile-avatar-placeholder">👤</span>
-        <img id="profile-avatar-image" class="hidden" alt="Profile picture" />
-      </div>
-      <label class="profile-photo-upload" for="profile-photo-input">
-        <span>📷 Add profile picture</span>
-        <input id="profile-photo-input" type="file" accept="image/*" />
-      </label>
-      <p class="upload-status hidden" id="profile-photo-status"></p>
-
-      <h3 id="profile-email">Not available</h3>
-
-      <p>
-        Member since:
-        <strong id="profile-created">Not available</strong>
-      </p>
-
-      <p>
-        My listings:
-        <strong id="profile-listing-count">0</strong>
-      </p>
-    </div>
-
-    <div class="profile-actions">
-      <button type="button" id="profile-view-listings">
-        View My Listings
-      </button>
-      <button type="button" id="profile-view-favourites">
-  My Favourites ❤️
-</button>
-
-      <button type="button" id="profile-logout">
-        Log out
-      </button>
-
-      <button type="button" id="profile-delete-account">
-        Delete my account
-      </button>
-    </div>
-  </div>
-</div>
-
     <!-- Seller contact modal -->
     <div class="modal hidden" id="contact-modal" role="dialog" aria-modal="true">
       <div class="modal-content contact-content">
@@ -560,6 +463,7 @@
     </p>
   </div>
 </div>
+  <script type="module" src="notifications.js"></script>
   <script type="module" src="app.js"></script>
   </body>
 </html>

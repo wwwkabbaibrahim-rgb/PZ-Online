@@ -1,0 +1,24 @@
+PZ ONLINE — DESIGN RESTORATION + NEW FEATURE PRESERVATION
+
+What changed
+1. Restored the current uploaded project as the base instead of replacing the whole project with an older package.
+2. Redesigned only the homepage visual layer so the existing marketplace JavaScript/features stay in place.
+3. Added the new PZ-style hero direction:
+   - Buy, sell and do business — the PZ way, online.
+   - Search bar with location selector.
+   - Category shortcuts.
+   - Blue/white rounded UI, soft shadows and modern marketplace layout.
+4. Added a panoramic Freetown hero background image reference without the Sierra Leone flag.
+5. Added photographic Popular Categories cards using the existing category image assets.
+6. Added a full All Categories area so the existing category filtering continues to work.
+7. Kept the current business-account placeholder page and business link.
+8. Kept the current new marketplace features in app.js/product.js/messages.js/etc., including reporting, blocking, favourites, offers, chat, notifications, seller profiles, verified sellers, listing status, views, save-search alerts and other existing functionality.
+9. Ratings/reviews remain deferred and are not presented as a current homepage feature.
+10. Updated the privacy text/README so ratings/reviews are not described as an active current feature.
+
+IMPORTANT
+- Replace the files in your project with the files in this package.
+- Copy the category-images folder as-is.
+- The hero uses a Wikimedia Commons Freetown aerial photo loaded by CSS. The page footer includes attribution.
+- No Firestore rules were changed in this design restoration package.
+- Test the homepage, category filtering, search, login, Post an Ad, messages, notifications and product pages after replacement.

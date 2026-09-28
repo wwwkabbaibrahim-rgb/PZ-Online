@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Browse PZ Online marketplace listings by category, location and price." />
+  <title>Browse Listings | PZ Online</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+<header class="site-header">
+  <div class="container nav">
+    <a class="logo" href="index.html">PZ<span>Online</span></a>
+    <nav class="nav-links" aria-label="Main navigation">
+      <a href="browse.html">Browse listings</a>
+      <div class="top-nav-dropdown">
+        <button type="button" class="top-nav-dropdown-toggle">All Categories <span>▾</span></button>
+        <div class="top-nav-dropdown-menu"><a href="browse.html">All categories</a><a href="browse.html?category=Mobiles">Mobiles</a><a href="browse.html?category=Okada%20%26%20Motorbikes">Okada &amp; Motorbikes</a><a href="browse.html?category=Cars%20%26%20Vehicles">Cars &amp; Vehicles</a><a href="browse.html?category=Electronics">Electronics</a><a href="browse.html?category=Phones%20%26%20Accessories">Phones &amp; Accessories</a><a href="browse.html?category=Home%20%26%20Furniture">Home &amp; Furniture</a><a href="browse.html?category=Land%20%26%20Property">Land &amp; Property</a><a href="browse.html?category=Fashion">Fashion</a><a href="browse.html?category=Agriculture">Agriculture</a><a href="browse.html?category=Food%20%26%20Drinks">Food &amp; Drinks</a><a href="browse.html?category=Building%20Materials">Building Materials</a><a href="browse.html?category=Generators%20%26%20Solar">Generators &amp; Solar</a><a href="browse.html?category=Spare%20Parts">Spare Parts</a><a href="browse.html?category=Jobs">Jobs</a><a href="browse.html?category=Beauty">Beauty</a><a href="browse.html?category=Education">Education</a><a href="browse.html?category=Services">Services</a><a href="browse.html?category=Pets%20%26%20Animals">Pets &amp; Animals</a></div>
+      </div>
+      <a href="messages.html">Messages</a>
+      <a href="index.html#how-it-works">How it works</a>
+    </nav>
+    <div class="nav-actions">
+      <button class="notification-bell" id="notification-bell" type="button" aria-label="Notifications" title="Notifications">🔔<span class="notification-count hidden" id="notification-count">0</span></button>
+      <span id="user-status">Browsing as guest</span>
+      <button class="auth-button" id="auth-button">Log in</button>
+      <div class="account-menu hidden" id="account-menu">
+        <button type="button" class="account-menu-toggle" id="account-menu-toggle" aria-haspopup="true" aria-expanded="false" aria-label="Account menu">
+          <span class="account-avatar"><span id="account-avatar-placeholder">👤</span><img id="account-avatar-image" class="hidden" alt="" /></span><span class="account-menu-caret">▾</span>
+        </button>
+        <div class="account-menu-dropdown hidden" id="account-menu-dropdown">
+          <p class="account-menu-email" id="account-menu-email"></p>
+          <a href="profile.html">👤 My Profile</a>
+          <a href="my-listings.html">▣ My Listings</a>
+          <a href="favourites.html">♥ My Favourites</a>
+          <a href="browse.html?view=recent">◷ My Browsing</a>
+          <a href="messages.html">💬 Messages</a>
+          <button type="button" id="account-menu-logout">↪ Log out</button>
+        </div>
+      </div>
+      <a class="post-ad-button" href="index.html?post=1">+ Post an Ad</a>
+    </div>
+  </div>
+</header>
+
+<main class="container page-shell">
+  <div class="page-heading-row">
+    <div>
+      <p class="eyebrow">Freetown-first marketplace</p>
+      <h1 id="browse-heading">Browse Listings</h1>
+      <p class="page-subtitle">Find products and services by category, location and price.</p>
+    </div>
+    <a class="secondary-button" href="index.html">← Home</a>
+  </div>
+
+  <section class="browse-filters">
+    <input id="browse-search" type="search" placeholder="Search listings..." aria-label="Search listings" />
+    <select id="browse-category" aria-label="Category"><option value="All">All categories</option></select>
+    <select id="browse-location" aria-label="Location"><option value="">All locations</option></select>
+    <input id="browse-min-price" type="number" min="0" placeholder="Min Le" aria-label="Minimum price" />
+    <input id="browse-max-price" type="number" min="0" placeholder="Max Le" aria-label="Maximum price" />
+    <select id="browse-sort" aria-label="Sort listings">
+      <option value="newest">Newest</option>
+      <option value="price-low">Price: low to high</option>
+      <option value="price-high">Price: high to low</option>
+      <option value="oldest">Oldest</option>
+    </select>
+  </section>
+
+  <div class="browse-results-heading"><strong id="browse-count">0 listings</strong><span>Showing listings from PZ Online</span></div>
+  <div class="listing-grid browse-grid" id="browse-grid"></div>
+  <p class="empty-message hidden" id="browse-empty">No listings match these filters.</p>
+</main>
+
+<footer class="site-footer"><div class="container"><p>© 2026 PZ Online — Sierra Leone marketplace.</p><p class="footer-links"><a href="terms.html">Terms &amp; Conditions</a><a href="privacy.html">Privacy Policy</a></p></div></footer>
+
+<div class="notification-panel hidden" id="notification-panel"><div class="notification-panel-header"><strong>Notifications</strong><button id="mark-notifications-read" type="button">Mark all read</button></div><div id="notification-list"><p class="notification-empty">No notifications yet.</p></div></div>
+
+<script type="module" src="site-nav.js"></script>
+<script type="module" src="notifications.js"></script>
+<script type="module" src="browse.js"></script>
+</body>
+</html>

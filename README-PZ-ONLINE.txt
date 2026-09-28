@@ -9,7 +9,7 @@ What is included:
 - Minimum/maximum Le price filtering
 - Share listing with Web Share or clipboard fallback
 - In-app notifications for messages and offers
-- Trust & ratings/reviews for marketplace interactions
+- Trust and safety features including verified sellers, reporting and blocking (ratings/reviews intentionally deferred)
 - Profile picture upload
 - Terms & Conditions and Privacy Policy pages
 - Updated Firestore rules
