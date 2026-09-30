@@ -4,7 +4,7 @@ import { collection, getDocs, getFirestore, onSnapshot } from "https://www.gstat
 
 // Use the same project configuration as the main PZ Online app.
 const realConfig = {
-  apiKey: "AIzaSyD5tdmon-6R_IABZyUo8QEfSKlTBrmLTo",
+  apiKey: "AIzaSyD5tdmon0-6R_IABZyUo8QEfSKlTBrmLTo",
   authDomain: "markethub-prototype.firebaseapp.com",
   projectId: "markethub-prototype",
   storageBucket: "markethub-prototype.firebasestorage.app",

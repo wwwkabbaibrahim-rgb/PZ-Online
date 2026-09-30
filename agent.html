@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><meta name="description" content="PZ team shop registration."><title>Shop registration | PZ Online</title><link rel="stylesheet" href="style.css"><link rel="stylesheet" href="shop.css"></head>
+<body>
+<header class="site-header"><div class="container nav"><a class="logo" href="index.html">PZ<span>Online</span></a><nav class="nav-links" aria-label="Main navigation"><a href="index.html">Marketplace</a><a href="business.html">Shops</a><a href="browse.html">Browse listings</a><a href="messages.html">Messages</a></nav><div class="nav-actions"><button class="notification-bell" id="notification-bell" type="button" aria-label="Notifications" title="Notifications">🔔<span class="notification-count hidden" id="notification-count">0</span></button><span id="user-status">Browsing as guest</span><button class="auth-button" id="auth-button">Log in</button><div class="account-menu hidden" id="account-menu"><button type="button" class="account-menu-toggle" id="account-menu-toggle" aria-label="Account menu"><span class="account-avatar"><span id="account-avatar-placeholder">👤</span><img id="account-avatar-image" class="hidden" alt=""/></span><span>▾</span></button><div class="account-menu-dropdown hidden" id="account-menu-dropdown"><p class="account-menu-email" id="account-menu-email"></p><a href="profile.html">👤 My Profile</a><a href="my-shop.html">🏪 My Shop</a><a href="my-listings.html">▣ My Listings</a><a href="favourites.html">♥ My Favourites</a><a href="browse.html?view=recent">◷ My Browsing</a><a href="messages.html">💬 Messages</a><button id="account-menu-logout" type="button">↪ Log out</button></div></div><a class="post-ad-button" href="index.html?post=1">+ Post an Ad</a></div></div></header>
+<main class="container page-shell">
+  <div class="page-heading-row">
+    <div>
+      <p class="eyebrow">PZ team</p>
+      <h1>Shop registration</h1>
+      <p class="page-subtitle" id="agent-role-line">Register shops, add their products and follow their approval.</p>
+    </div>
+  </div>
+
+  <div id="agent-checking" class="sp-panel"><p class="sp-status-line">Checking your access...</p></div>
+
+  <div id="agent-signed-out" class="sp-panel hidden">
+    <h2>Log in to continue</h2>
+    <p>This page is for the PZ team. Log in with your team account.</p>
+    <a class="primary-button" href="index.html?login=1">Log in</a>
+  </div>
+
+  <div id="agent-denied" class="sp-panel hidden">
+    <h2>You do not have team access yet</h2>
+    <p>Send this ID to the PZ manager. Once they add you to the team, refresh this page.</p>
+    <span class="sp-uid" id="agent-uid"></span>
+  </div>
+
+  <div id="agent-ready" class="hidden">
+    <div class="sp-tabs" role="tablist">
+      <button type="button" class="sp-tab active" data-tab="register" role="tab">Register a shop</button>
+      <button type="button" class="sp-tab" data-tab="shops" role="tab">My shops</button>
+      <button type="button" class="sp-tab" data-tab="products" role="tab">Products</button>
+    </div>
+
+    <section class="sp-panel" data-panel="register">
+      <h2>Register a shop</h2>
+      <p>Fill this in at the shop. The shop stays hidden from the public until a manager approves it.</p>
+      <form class="sp-form" id="shop-form" novalidate>
+        <label class="sp-field">Shop name<input id="f-name" maxlength="80" required></label>
+        <label class="sp-field">Category<select id="f-category" required></select></label>
+        <label class="sp-field">Area<select id="f-location" required></select></label>
+        <label class="sp-field">Shop phone<small>Customers can see and call this number.</small><input id="f-phone" type="tel" maxlength="20" required></label>
+        <label class="sp-field wide">Address and landmark<small>For example: opposite the Total station, next to the blue gate.</small><textarea id="f-address" rows="2" maxlength="240" required></textarea></label>
+        <div class="sp-field wide">Map location<small>Stand at the shop door and tap the button. Riders use this to find the shop. If it does not work, paste the coordinates or a Google Maps link below.</small>
+          <div class="sp-gps"><button type="button" class="secondary-button" id="f-gps">Use my current location</button><span id="f-gps-status" class="upload-status">No location saved yet.</span><a id="f-map-link" class="sp-map-link hidden" target="_blank" rel="noopener">Check on map</a></div>
+          <div class="sp-location-manual"><input id="f-latlng" placeholder="Or paste: 8.4657, -13.2317 or a Google Maps link" aria-label="Paste coordinates or a map link"><button type="button" class="secondary-button" id="f-latlng-use">Use these</button></div>
+          <input type="hidden" id="f-lat"><input type="hidden" id="f-lng">
+        </div>
+        <label class="sp-field wide">Shop photos<small>Take 1 to 3 photos: the front of the shop and the inside. Big photos are shrunk automatically.</small><input id="f-photos" type="file" accept="image/*" multiple></label>
+        <label class="sp-field">Owner full name<small>Private. Only the PZ team can see this.</small><input id="f-owner" maxlength="80" required></label>
+        <label class="sp-field">Owner phone<small>Private. Only the PZ team can see this.</small><input id="f-owner-phone" type="tel" maxlength="20" required></label>
+        <label class="sp-field wide">Notes<small>Private. Anything the manager should know.</small><textarea id="f-notes" rows="2" maxlength="400"></textarea></label>
+        <fieldset class="sp-checks">
+          <legend>Before you submit</legend>
+          <label class="sp-check"><input type="checkbox" id="c-id"> I saw the owner's ID</label>
+          <label class="sp-check"><input type="checkbox" id="c-visit"> I visited the shop in person</label>
+          <label class="sp-check"><input type="checkbox" id="c-prices"> I checked that the prices are real</label>
+          <label class="sp-check"><input type="checkbox" id="c-trial"> I explained the trial period and the refund rule for refused orders</label>
+        </fieldset>
+        <div class="sp-actions"><button type="submit" class="primary-button" id="f-submit">Submit shop</button><p class="sp-status-line" id="f-status" role="status"></p></div>
+      </form>
+    </section>
+
+    <section class="sp-panel hidden" data-panel="shops">
+      <h2 id="shops-title">My shops</h2>
+      <p id="shops-sub">Shops you registered and where they are in the approval process.</p>
+      <div class="sp-list" id="shops-list"></div>
+      <p class="empty-message hidden" id="shops-empty">No shops yet. Register the first one.</p>
+    </section>
+
+    <section class="sp-panel hidden" data-panel="products">
+      <h2>Products</h2>
+      <p>Add and edit the products a shop sells. Customers only see them once the shop is approved.</p>
+      <div class="sp-form"><label class="sp-field wide">Shop<select id="p-shop"></select></label></div>
+      <div id="pm-root"></div>
+    </section>
+  </div>
+</main>
+<footer class="site-footer"><div class="container"><p>© 2026 PZ Online — Sierra Leone marketplace.</p><p class="footer-links"><a href="terms.html">Terms &amp; Conditions</a><a href="privacy.html">Privacy Policy</a></p></div></footer>
+<div class="notification-panel hidden" id="notification-panel"><div class="notification-panel-header"><strong>Notifications</strong><button id="mark-notifications-read" type="button">Mark all read</button></div><div id="notification-list"><p class="notification-empty">No notifications yet.</p></div></div>
+<script type="module" src="site-nav.js"></script>
+<script type="module" src="notifications.js"></script>
+<script type="module" src="agent.js"></script>
+</body>
+</html>

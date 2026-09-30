@@ -139,5 +139,99 @@ service cloud.firestore {
         && request.resource.data.userId == resource.data.userId;
       allow delete: if false;
     }
+
+    // =====================================================================
+    // PZ Business: staff roles, shops, products, private owner details,
+    // and shop owner accounts.
+    // Staff documents are created by hand in the Firebase console
+    // (staff/{uid} with field role = "owner", "manager" or "agent").
+    // =====================================================================
+    function isManager() {
+      return isAdmin()
+        || (request.auth != null
+          && exists(/databases/$(database)/documents/staff/$(request.auth.uid))
+          && get(/databases/$(database)/documents/staff/$(request.auth.uid)).data.role in ['owner', 'manager']);
+    }
+
+    function isAgent() {
+      return isManager()
+        || (request.auth != null
+          && exists(/databases/$(database)/documents/staff/$(request.auth.uid))
+          && get(/databases/$(database)/documents/staff/$(request.auth.uid)).data.role == 'agent');
+    }
+
+    // A shop owner is the person who claimed the shop with its owner code.
+    function isShopOwner(shopId) {
+      return request.auth != null
+        && exists(/databases/$(database)/documents/shopOwners/$(shopId))
+        && get(/databases/$(database)/documents/shopOwners/$(shopId)).data.uid == request.auth.uid;
+    }
+
+    function validProduct() {
+      return request.resource.data.name is string
+        && request.resource.data.name.size() > 0
+        && request.resource.data.name.size() <= 100
+        && request.resource.data.price is number
+        && request.resource.data.price >= 0
+        && request.resource.data.inStock is bool;
+    }
+
+    match /staff/{staffId} {
+      allow read: if request.auth != null && (request.auth.uid == staffId || isManager());
+      allow write: if false;
+    }
+
+    match /shops/{shopId} {
+      allow read: if resource.data.status in ['trial', 'active']
+        || isAgent()
+        || (request.auth != null && resource.data.registeredBy == request.auth.uid)
+        || isShopOwner(shopId);
+      allow create: if isAgent()
+        && request.resource.data.registeredBy == request.auth.uid
+        && request.resource.data.status == 'pending';
+      allow update: if isManager()
+        || (isAgent()
+          && resource.data.registeredBy == request.auth.uid
+          && request.resource.data.registeredBy == resource.data.registeredBy
+          && request.resource.data.status == resource.data.status)
+        || (isShopOwner(shopId)
+          && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['phone', 'address', 'lat', 'lng', 'photos', 'updatedAt']));
+      allow delete: if isManager();
+
+      match /products/{productId} {
+        allow read: if get(/databases/$(database)/documents/shops/$(shopId)).data.status in ['trial', 'active']
+          || isAgent()
+          || isShopOwner(shopId);
+        allow create, update: if validProduct()
+          && (isManager()
+            || (isAgent()
+              && get(/databases/$(database)/documents/shops/$(shopId)).data.registeredBy == request.auth.uid)
+            || isShopOwner(shopId));
+        allow delete: if isManager()
+          || (isAgent()
+            && get(/databases/$(database)/documents/shops/$(shopId)).data.registeredBy == request.auth.uid)
+          || isShopOwner(shopId);
+      }
+    }
+
+    // Owner details, notes, the checklist and the owner code. Never public, never readable by the owner.
+    match /shopPrivate/{shopId} {
+      allow read, create, update: if isManager()
+        || (isAgent()
+          && get(/databases/$(database)/documents/shops/$(shopId)).data.registeredBy == request.auth.uid);
+      allow delete: if isManager();
+    }
+
+    // Links a shop to the account that owns it. Created once, by the owner, with the right code.
+    match /shopOwners/{shopId} {
+      allow read: if isAgent()
+        || (request.auth != null && resource.data.uid == request.auth.uid);
+      allow create: if request.auth != null
+        && request.resource.data.uid == request.auth.uid
+        && request.resource.data.code is string
+        && request.resource.data.code == get(/databases/$(database)/documents/shopPrivate/$(shopId)).data.claimCode;
+      allow update: if false;
+      allow delete: if isManager();
+    }
   }
 }

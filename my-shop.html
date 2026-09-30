@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><meta name="description" content="Manage your shop, products and prices on PZ Online."><title>My Shop | PZ Online</title><link rel="stylesheet" href="style.css"><link rel="stylesheet" href="shop.css"></head>
+<body>
+<header class="site-header"><div class="container nav"><a class="logo" href="index.html">PZ<span>Online</span></a><nav class="nav-links" aria-label="Main navigation"><a href="index.html">Marketplace</a><a href="business.html">Shops</a><a href="browse.html">Browse listings</a><a href="messages.html">Messages</a></nav><div class="nav-actions"><button class="notification-bell" id="notification-bell" type="button" aria-label="Notifications" title="Notifications">🔔<span class="notification-count hidden" id="notification-count">0</span></button><span id="user-status">Browsing as guest</span><button class="auth-button" id="auth-button">Log in</button><div class="account-menu hidden" id="account-menu"><button type="button" class="account-menu-toggle" id="account-menu-toggle" aria-label="Account menu"><span class="account-avatar"><span id="account-avatar-placeholder">👤</span><img id="account-avatar-image" class="hidden" alt=""/></span><span>▾</span></button><div class="account-menu-dropdown hidden" id="account-menu-dropdown"><p class="account-menu-email" id="account-menu-email"></p><a href="profile.html">👤 My Profile</a><a href="my-shop.html">🏪 My Shop</a><a href="my-listings.html">▣ My Listings</a><a href="favourites.html">♥ My Favourites</a><a href="browse.html?view=recent">◷ My Browsing</a><a href="messages.html">💬 Messages</a><button id="account-menu-logout" type="button">↪ Log out</button></div></div><a class="post-ad-button" href="index.html?post=1">+ Post an Ad</a></div></div></header>
+<main class="container page-shell">
+  <div class="page-heading-row">
+    <div>
+      <p class="eyebrow">For business owners</p>
+      <h1>My shop</h1>
+      <p class="page-subtitle">Manage your products, prices and stock. Changes show to customers straight away.</p>
+    </div>
+  </div>
+
+  <div id="os-checking" class="sp-panel"><p class="sp-status-line">Loading...</p></div>
+
+  <section id="os-auth" class="sp-panel hidden">
+    <h2>Business owner account</h2>
+    <p>Create a business account, or log in if you already have one. The PZ team will give you a shop code after they register your shop.</p>
+    <div class="os-tabs" role="tablist">
+      <button type="button" class="sp-tab active" data-mode="signup">Create account</button>
+      <button type="button" class="sp-tab" data-mode="login">Log in</button>
+    </div>
+    <form class="sp-form" id="os-auth-form" novalidate>
+      <label class="sp-field wide">Email address<input id="os-email" type="email" autocomplete="email" required></label>
+      <label class="sp-field wide">Password<small>At least 6 characters.</small><input id="os-password" type="password" minlength="6" autocomplete="new-password" required></label>
+      <div class="sp-actions"><button type="submit" class="primary-button" id="os-auth-submit">Create business account</button><button type="button" class="secondary-button" id="os-reset">Forgot password?</button><p class="sp-status-line" id="os-auth-status" role="status"></p></div>
+    </form>
+    <p style="margin:16px 0 8px;text-align:center;color:var(--muted)">or</p>
+    <button type="button" class="secondary-button os-google" id="os-google">Continue with Google</button>
+  </section>
+
+  <div id="os-main" class="hidden">
+    <section class="sp-panel os-shop" id="os-claim-panel">
+      <h2>Add your shop with a shop code</h2>
+      <p>Paste the code the PZ team gave you. It links your shop to this account.</p>
+      <form class="sp-form" id="os-claim-form" novalidate>
+        <label class="sp-field wide">Shop code<input id="os-claim-key" autocomplete="off" spellcheck="false" placeholder="Paste your shop code"></label>
+        <div class="sp-actions"><button type="submit" class="primary-button" id="os-claim-submit">Link my shop</button><button type="button" class="secondary-button" id="os-logout">Log out</button><p class="sp-status-line" id="os-claim-status" role="status"></p></div>
+      </form>
+    </section>
+    <div id="os-shops"></div>
+    <p class="empty-message hidden" id="os-empty">No shop is linked to this account yet. Use your shop code above.</p>
+  </div>
+</main>
+<footer class="site-footer"><div class="container"><p>© 2026 PZ Online — Sierra Leone marketplace.</p><p class="footer-links"><a href="terms.html">Terms &amp; Conditions</a><a href="privacy.html">Privacy Policy</a></p></div></footer>
+<div class="notification-panel hidden" id="notification-panel"><div class="notification-panel-header"><strong>Notifications</strong><button id="mark-notifications-read" type="button">Mark all read</button></div><div id="notification-list"><p class="notification-empty">No notifications yet.</p></div></div>
+<script type="module" src="site-nav.js"></script>
+<script type="module" src="notifications.js"></script>
+<script type="module" src="my-shop.js"></script>
+</body>
+</html>

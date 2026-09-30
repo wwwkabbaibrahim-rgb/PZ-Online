@@ -1,7 +1,7 @@
 import { initializeApp, getApps, getApp } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
 import { getAuth, onAuthStateChanged, updateProfile } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js";
 import { collection, deleteDoc, doc, getDocs, getFirestore, query, where } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
-const config={apiKey:"AIzaSyD5tdmon-6R_IABZyUo8QEfSKlTBrmLTo",authDomain:"markethub-prototype.firebaseapp.com",projectId:"markethub-prototype",storageBucket:"markethub-prototype.firebasestorage.app",messagingSenderId:"350124318634",appId:"1:350124318634:web:cb4401e9f84edcdd5995d3"};
+const config={apiKey:"AIzaSyD5tdmon0-6R_IABZyUo8QEfSKlTBrmLTo",authDomain:"markethub-prototype.firebaseapp.com",projectId:"markethub-prototype",storageBucket:"markethub-prototype.firebasestorage.app",messagingSenderId:"350124318634",appId:"1:350124318634:web:cb4401e9f84edcdd5995d3"};
 const app=getApps().length?getApp():initializeApp(config);const auth=getAuth(app);const db=getFirestore(app);
 const signedOut=document.getElementById("profile-signed-out"), page=document.getElementById("profile-page");
 const email=document.getElementById("profile-page-email"), member=document.getElementById("profile-page-member"), display=document.getElementById("profile-display-name"), save=document.getElementById("save-profile"), status=document.getElementById("profile-save-status");

@@ -1,30 +1,40 @@
 <!DOCTYPE html>
 <html lang="en">
-<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><meta name="description" content="Shop from local stores registered by the PZ team."><title>PZ Shops | PZ Online</title><link rel="stylesheet" href="style.css"><link rel="stylesheet" href="shop.css"></head>
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><meta name="description" content="Shop details and products on PZ Online."><title>Shop | PZ Online</title><link rel="stylesheet" href="style.css"><link rel="stylesheet" href="shop.css"></head>
 <body>
 <header class="site-header"><div class="container nav"><a class="logo" href="index.html">PZ<span>Online</span></a><nav class="nav-links" aria-label="Main navigation"><a href="index.html">Marketplace</a><a href="business.html">Shops</a><a href="browse.html">Browse listings</a><a href="messages.html">Messages</a></nav><div class="nav-actions"><button class="notification-bell" id="notification-bell" type="button" aria-label="Notifications" title="Notifications">🔔<span class="notification-count hidden" id="notification-count">0</span></button><span id="user-status">Browsing as guest</span><button class="auth-button" id="auth-button">Log in</button><div class="account-menu hidden" id="account-menu"><button type="button" class="account-menu-toggle" id="account-menu-toggle" aria-label="Account menu"><span class="account-avatar"><span id="account-avatar-placeholder">👤</span><img id="account-avatar-image" class="hidden" alt=""/></span><span>▾</span></button><div class="account-menu-dropdown hidden" id="account-menu-dropdown"><p class="account-menu-email" id="account-menu-email"></p><a href="profile.html">👤 My Profile</a><a href="my-shop.html">🏪 My Shop</a><a href="my-listings.html">▣ My Listings</a><a href="favourites.html">♥ My Favourites</a><a href="browse.html?view=recent">◷ My Browsing</a><a href="messages.html">💬 Messages</a><button id="account-menu-logout" type="button">↪ Log out</button></div></div><a class="post-ad-button" href="index.html?post=1">+ Post an Ad</a></div></div></header>
 <main class="container page-shell">
-  <div class="page-heading-row">
-    <div>
-      <p class="eyebrow">PZ Shops</p>
-      <h1>Shop from local stores</h1>
-      <p class="page-subtitle">Stores registered in person by the PZ team, with products you can order for delivery.</p>
-    </div>
-    <div class="shop-hero-actions"><a class="secondary-button" href="my-shop.html">🏪 I own a shop</a><a class="secondary-button" href="browse.html">Browse marketplace listings</a></div>
+  <a class="product-back-link" id="shop-back" href="business.html">&larr; All shops</a>
+  <p id="shop-loading">Loading shop...</p>
+  <div id="shop-not-found" class="hidden">
+    <h2>Shop not found</h2>
+    <p>This shop may not be open yet, or the link is incorrect.</p>
+    <a class="primary-button" href="business.html">See all shops</a>
   </div>
-  <div class="sp-note" role="note"><span aria-hidden="true">🛵</span><span>Ordering and delivery are being set up. For now you can look through shops and their products.</span></div>
-  <section class="shop-filters" aria-label="Filter shops">
-    <input id="shop-search" type="search" placeholder="Search shops..." aria-label="Search shops">
-    <select id="shop-category" aria-label="Shop category"></select>
+  <section id="shop-detail" class="hidden">
+    <div class="shop-hero">
+      <div>
+        <img id="shop-main-photo" class="shop-cover hidden" alt="">
+        <div id="shop-photo-empty" class="shop-cover-empty" aria-hidden="true">🏪</div>
+        <div class="shop-thumbs" id="shop-thumbs"></div>
+      </div>
+      <div>
+        <span class="shop-visited" id="shop-badge">✓ Visited by the PZ team</span>
+        <h1 id="shop-name"></h1>
+        <p id="shop-category"></p>
+        <p id="shop-address"></p>
+        <div class="shop-hero-actions"><a class="primary-button hidden" id="shop-call" href="#">📞 Call shop</a></div>
+      </div>
+    </div>
+    <div class="page-heading-row"><div><h2>Products</h2><p class="page-subtitle" id="product-count"></p></div></div>
+    <div class="sp-product-grid" id="product-grid"></div>
+    <p class="empty-message hidden" id="product-empty">This shop has not added products yet.</p>
   </section>
-  <div class="browse-results-heading"><strong id="shop-count">0 shops</strong></div>
-  <div class="shop-grid" id="shop-grid"></div>
-  <p class="empty-message hidden" id="shop-empty"></p>
 </main>
 <footer class="site-footer"><div class="container"><p>© 2026 PZ Online — Sierra Leone marketplace.</p><p class="footer-links"><a href="terms.html">Terms &amp; Conditions</a><a href="privacy.html">Privacy Policy</a></p></div></footer>
 <div class="notification-panel hidden" id="notification-panel"><div class="notification-panel-header"><strong>Notifications</strong><button id="mark-notifications-read" type="button">Mark all read</button></div><div id="notification-list"><p class="notification-empty">No notifications yet.</p></div></div>
 <script type="module" src="site-nav.js"></script>
 <script type="module" src="notifications.js"></script>
-<script type="module" src="business.js"></script>
+<script type="module" src="shop.js"></script>
 </body>
 </html>
